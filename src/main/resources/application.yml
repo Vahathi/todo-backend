@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: baeldung
+    password: baeldung
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+      sql:
+        init: always
+        test:
+          openapi:
+            dev-url: http://localhost:8081
+            test:
+              openapi:
+                dev-url: http://localhost:8080
+                prod-url: http://phoenixapi.ddns.net:9000/
+            springdoc:
+              packages-to-scan: com.vahathi.test.controller
+              swagger-ui:
+                filter: true
+                operationsSorter: method
+                tagsSorter: alpha
+                tryItOutEnabled: true
+                logging:
+                  level:
+                    org:
+                      hibernate:
+                        type: trace
+
+
