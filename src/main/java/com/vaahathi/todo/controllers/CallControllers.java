@@ -4,15 +4,21 @@ import com.vaahathi.todo.entity.Appointment;
 import com.vaahathi.todo.entity.Call;
 import com.vaahathi.todo.entity.ToDo;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
+import com.vaahathi.todo.models.call.CallRequest;
+import com.vaahathi.todo.models.call.CallResponse;
 import com.vaahathi.todo.repository.CallRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +28,8 @@ public class CallControllers {
 
         @Autowired
         private CallRepository callRepository;
+        @Autowired
+        private ModelMapper modelMapper;
         @Operation(
                 summary =  "create a new call",
                 description = "Id will be automatically generated in UUID format."
@@ -34,31 +42,41 @@ public class CallControllers {
 
 
         @PostMapping
-        public Call createCall(@RequestBody Call call) {
-            return callRepository.save(call);
+        public ResponseEntity <CallResponse> createCall(@RequestBody CallRequest callRequest) {
+            Call call = modelMapper.map(callRequest, Call.class);
+            Call savedCall = callRepository.save(call);
+            CallResponse callResponse = modelMapper.map(savedCall, CallResponse.class);
+            return ResponseEntity.ok(callResponse);
         }
     @GetMapping("/list")
-    public List<Call> getCallList(
+    public ResponseEntity<List<CallResponse> >getCallList(
             @RequestParam("category") String category,
             @RequestParam("ownerId") UUID ownerId,
             @RequestParam("taskType") String taskType) {
-        return callRepository.findByCategoryAndOwnerIdAndTaskType(category, ownerId, taskType);
+        List<Call> calls = callRepository.findByCategoryAndOwnerIdAndTaskType(category, ownerId, taskType);
+        Type listType = new TypeToken<List<CallResponse>>() {}.getType();
+        List<CallResponse> callResponses = modelMapper.map(calls, listType);
+        return ResponseEntity.ok(callResponses);
     }
     @PutMapping("/{id}")
-    public Call updateCall(@PathVariable UUID id, @RequestBody Call updatedCall) {
+    public ResponseEntity<CallResponse> updateCall(@PathVariable UUID id, @RequestBody CallRequest updatedCallRequest
+    ) {
         Call existingCall = callRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Call not found with "+id));
-        existingCall.setTaskScheduled(updatedCall.isTaskScheduled());
-        existingCall.setDueDate(updatedCall.getDueDate());
-        existingCall.setUrgent(updatedCall.isUrgent());
-        existingCall.setImportant(updatedCall.isImportant());
-        existingCall.setPurpose(updatedCall.getPurpose());
-        existingCall.setDependency(updatedCall.isDependency());
-        existingCall.setOwnerId(updatedCall.getOwnerId());
-        existingCall.setAssignedTo(updatedCall.getAssignedTo());
-        existingCall.setPersonName(updatedCall.getPersonName());
-        existingCall.setPhoneNumber(updatedCall.getPhoneNumber());
-        existingCall.setCallNote(updatedCall.getCallNote());
-        return callRepository.save(existingCall);
+        existingCall.setTaskScheduled(updatedCallRequest.isTaskScheduled());
+        existingCall.setDueDate(updatedCallRequest.getDueDate());
+        existingCall.setUrgent(updatedCallRequest.isUrgent());
+        existingCall.setImportant(updatedCallRequest.isImportant());
+        existingCall.setPurpose(updatedCallRequest.getPurpose());
+        existingCall.setDependency(updatedCallRequest.isDependency());
+        existingCall.setAssignedTo(updatedCallRequest.getAssignedTo());
+        existingCall.setPersonName(updatedCallRequest.getPersonName());
+        existingCall.setPhoneNumber(updatedCallRequest.getPhoneNumber());
+        existingCall.setCallNote(updatedCallRequest.getCallNote());
+        modelMapper.map(updatedCallRequest, existingCall);
+
+        Call updatedCall = callRepository.save(existingCall);
+        CallResponse callResponse = modelMapper.map(updatedCall, CallResponse.class);
+        return ResponseEntity.ok(callResponse);
     }
 }
 
