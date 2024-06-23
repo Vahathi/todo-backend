@@ -50,7 +50,7 @@ public class MailControllers {
         MailResponse mailResponse = modelMapper.map(savedMail, MailResponse.class);
         return ResponseEntity.ok(mailResponse);
     }
-    @GetMapping("list")
+    @GetMapping("/list")
     public ResponseEntity<List<MailResponse>>getMails(@RequestParam("category") String category,
                                @RequestParam("ownerId") UUID ownerId,
                                @RequestParam("taskType") String taskType) {

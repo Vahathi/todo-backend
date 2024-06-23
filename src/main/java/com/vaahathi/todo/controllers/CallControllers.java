@@ -41,7 +41,7 @@ public class CallControllers {
                 @ApiResponse(responseCode = "500", description = "Internal server error")})
 
 
-        @PostMapping
+        @PostMapping ("/create")
         public ResponseEntity <CallResponse> createCall(@RequestBody CallRequest callRequest) {
             Call call = modelMapper.map(callRequest, Call.class);
             Call savedCall = callRepository.save(call);

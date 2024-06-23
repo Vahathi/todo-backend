@@ -42,7 +42,7 @@ public class ContactControllers {
         Contact contact = modelMapper.map(contactRequest, Contact.class);
         return modelMapper.map(contact, ContactResponse.class);
     }
-    @GetMapping
+    @GetMapping("/List")
     public ResponseEntity<List<ContactResponse>> getAllContacts() {
         List<Contact> contacts = contactRepository.findAll();
         Type listType = new TypeToken<List<ContactResponse>>() {}.getType();

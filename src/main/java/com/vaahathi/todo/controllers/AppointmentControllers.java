@@ -45,14 +45,14 @@ private ModelMapper modelMapper;
         @ApiResponse(responseCode = "500", description = "Internal server error")})
 
 
-@PostMapping ("/api/appointments")
+@PostMapping ("/create")
 public ResponseEntity<AppointmentResponse>  createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
     Appointment appointment = modelMapper.map(appointmentRequest, Appointment.class);
     Appointment savedAppointment = appointmentRepository.save(appointment);
     AppointmentResponse appointmentResponse = modelMapper.map(savedAppointment, AppointmentResponse.class);
     return ResponseEntity.ok(appointmentResponse);
 }
-@GetMapping
+@GetMapping ("/List")
 public ResponseEntity <List<AppointmentResponse>> getAppointments(
         @RequestParam("category") String category,
         @RequestParam("ownerId") UUID ownerId,
@@ -62,7 +62,7 @@ public ResponseEntity <List<AppointmentResponse>> getAppointments(
     List<AppointmentResponse> appointmentResponses = modelMapper.map(appointments, listType);
     return ResponseEntity.ok(appointmentResponses);
 }
-    @PutMapping("/api/appointments/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<AppointmentResponse> updateAppointment(@PathVariable UUID id, @RequestBody AppointmentRequest updatedAppointmentRequest) {
         Appointment existingAppointment =  appointmentRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Appointment not found with id: " + id));
