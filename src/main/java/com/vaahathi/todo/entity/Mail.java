@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 @Entity
 @Data
-public class Mail {
+public class Mail extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

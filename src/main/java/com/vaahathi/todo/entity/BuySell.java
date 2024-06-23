@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 @Entity
 @Data
-public class BuySell {
+public class BuySell extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
