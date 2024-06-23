@@ -1,20 +1,18 @@
-package com.vaahathi.todo.entity;
+package com.vaahathi.todo.models.todo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
-@Entity
+
+@Component
 @Data
-public class ToDo extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@AllArgsConstructor
+@NoArgsConstructor
+public class ToDoResponse {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;

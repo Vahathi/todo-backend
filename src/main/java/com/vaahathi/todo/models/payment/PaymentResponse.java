@@ -1,18 +1,17 @@
-package com.vaahathi.todo.entity;
+package com.vaahathi.todo.models.payment;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
-
-@Entity
+@Component
 @Data
-public class Payments extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@AllArgsConstructor
+@NoArgsConstructor
+public class PaymentResponse {
+    private String message;
     private UUID id;
     private String taskType;
     private String category;
@@ -34,4 +33,7 @@ public class Payments extends BaseEntity {
     private int paidStatus;
     private String paidOn;
     private String paymentHistory;
+    public PaymentResponse(String message){
+        this.message = message;
+    }
 }

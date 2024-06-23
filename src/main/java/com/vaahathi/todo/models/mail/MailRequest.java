@@ -1,28 +1,24 @@
-package com.vaahathi.todo.entity;
+package com.vaahathi.todo.models.mail;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
-@Entity
+
+@Component
 @Data
-public class Mail extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+@AllArgsConstructor
+@NoArgsConstructor
+public class MailRequest {
+    private UUID ownerId;
     private UUID pid;
     private List<UUID> cid;
     private int hierarchy;
     private String taskType;
     private String category;
-    private UUID ownerId;
     private boolean taskScheduled;
     private String dueDate;
     private boolean isUrgent;
@@ -31,5 +27,4 @@ public class Mail extends BaseEntity {
     private boolean dependency;
     private String  personName;
     private String eMailId;
-
 }

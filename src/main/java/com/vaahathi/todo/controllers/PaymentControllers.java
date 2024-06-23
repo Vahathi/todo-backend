@@ -1,23 +1,30 @@
 package com.vaahathi.todo.controllers;
 
 import com.vaahathi.todo.entity.Payments;
+import com.vaahathi.todo.models.payment.PaymentRequest;
+import com.vaahathi.todo.models.payment.PaymentResponse;
 import com.vaahathi.todo.repository.PaymentsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/payment")
 public class PaymentControllers {
     @Autowired
     PaymentsRepository paymentsRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Operation(
             summary = "process a new payment",
@@ -29,19 +36,32 @@ public class PaymentControllers {
             @ApiResponse(responseCode = "404", description = "Resource not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PostMapping("/process")
-    public String processPayment(@RequestBody Payments payments) {
-        return "Payment processed successfully";
+    public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest paymentRequest) {
+        boolean paymentSuccessful = processPaymentLogic(paymentRequest);
+        PaymentResponse paymentResponse;
+        if (paymentSuccessful) {
+            paymentResponse = new PaymentResponse("payment processed successfully");
+        } else {
+            paymentResponse = new PaymentResponse("payment processing failed");
+        }
+        return ResponseEntity.ok(paymentResponse);
+    }
+    private boolean processPaymentLogic(PaymentRequest paymentRequest) {
+        return true;
     }
 
     @PutMapping("/process")
-    public Payments updatePayment(@RequestBody Payments payments) {
-        Payments response = new Payments();
-        response.setDueDate("15-09-26");
-        return response;
+    public ResponseEntity<PaymentResponse>  updatePayment(@RequestBody PaymentRequest paymentRequest) {
+        paymentRequest.setDueDate(paymentRequest.getDueDate());
+        PaymentResponse response = modelMapper.map(paymentRequest, PaymentResponse.class);
+        return ResponseEntity.ok(response);
     }
     @GetMapping("/paymentList")
-    public List<String> getPaymentList(@RequestParam String ownerId, @RequestParam String category, @RequestParam String taskType) {
+    public ResponseEntity <PaymentResponse> getPaymentList(@RequestParam UUID ownerId,
+                                          @RequestParam String category,
+                                          @RequestParam String taskType) {
         List<String> paymentList = Arrays.asList("Payment1", "Payment2", "Payment3");
-        return paymentList;
+        PaymentResponse response = modelMapper.map(paymentList, PaymentResponse.class);
+        return ResponseEntity.ok(response);
     }
 }

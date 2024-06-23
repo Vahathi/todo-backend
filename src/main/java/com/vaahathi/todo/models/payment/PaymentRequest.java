@@ -1,22 +1,22 @@
-package com.vaahathi.todo.entity;
+package com.vaahathi.todo.models.payment;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
-
-@Entity
+@Component
 @Data
-public class Payments extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+@AllArgsConstructor
+@NoArgsConstructor
+public class PaymentRequest {
+    private UUID ownerId;
+    private UUID pid;
+    private List<UUID> cid;
     private String taskType;
     private String category;
-    private UUID ownerId;
     private String hierarchy;
     private boolean taskScheduled;
     private String dueDate;

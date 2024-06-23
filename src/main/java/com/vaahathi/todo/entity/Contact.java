@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.util.UUID;
 @Entity
 @Data
-public class Contact {
+public class Contact extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
    private UUID id;

@@ -1,19 +1,21 @@
-package com.vaahathi.todo.entity;
+package com.vaahathi.todo.models.event;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
-@Entity
+
+@Component
 @Data
-public class Event extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@AllArgsConstructor
+@NoArgsConstructor
+public class EventResponse {
     private UUID id;
+    private String createdBy;
+    private String updatedBy;
     private String taskType;
     private boolean taskScheduled;
     private String dueDate;
@@ -28,5 +30,3 @@ public class Event extends BaseEntity {
     private UUID ownerId;
     private String name;
 }
-
-

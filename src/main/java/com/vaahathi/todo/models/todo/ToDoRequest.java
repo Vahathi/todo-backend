@@ -1,28 +1,25 @@
-package com.vaahathi.todo.entity;
+package com.vaahathi.todo.models.todo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
-@Entity
+
+@Component
 @Data
-public class ToDo extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+@AllArgsConstructor
+@NoArgsConstructor
+public class ToDoRequest {
+    private UUID ownerId;
     private UUID pid;
     private List<UUID> cid;
     private String taskType;
     private boolean TaskScheduled;
     private String appointmentDate;
     private String category;
-    private UUID ownerId;
     private boolean Urgent;
     private boolean Important;
     private String purpose;

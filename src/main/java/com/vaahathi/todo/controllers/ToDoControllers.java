@@ -2,15 +2,21 @@ package com.vaahathi.todo.controllers;
 
 import com.vaahathi.todo.entity.ToDo;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
+import com.vaahathi.todo.models.todo.ToDoRequest;
+import com.vaahathi.todo.models.todo.ToDoResponse;
 import com.vaahathi.todo.repository.ToDoRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +26,8 @@ import java.util.UUID;
 public class ToDoControllers {
     @Autowired
     private ToDoRepository toDoRepository;
+    @Autowired
+    private ModelMapper modelMapper;
     @Operation(
             summary = "Create a new todo",
             description = "Id will be automatically generated in UUID format."
@@ -31,40 +39,45 @@ public class ToDoControllers {
             @ApiResponse(responseCode = "500", description = "Internal server error")})
 
     @PostMapping("/create")
-    public ToDo createToDo(@RequestBody ToDo toDo) {
-        toDo.setPurpose(toDo.getPurpose());
-        toDo.setAppointmentDate(toDo.getAppointmentDate());
-        toDo.setImportant(toDo.isImportant());
-
+    public ResponseEntity <ToDoResponse> createToDo(@RequestBody ToDoRequest toDoRequest) {
+        toDoRequest.setPurpose(toDoRequest.getPurpose());
+        toDoRequest.setAppointmentDate(toDoRequest.getAppointmentDate());
+        toDoRequest.setImportant(toDoRequest.isImportant());
+        ToDo toDo = modelMapper.map(toDoRequest, ToDo.class);
         // Save the To-Do to the database
         ToDo savedToDo = toDoRepository.save(toDo);
-
-        return savedToDo;
+        ToDoResponse response = modelMapper.map(savedToDo, ToDoResponse.class);
+        return ResponseEntity.ok(response);
     }
     @GetMapping("/list")
-    public List<ToDo> getToDoList(
+    public ResponseEntity<List<ToDoResponse>>getToDoList(
             @RequestParam("id") UUID id,
             @RequestParam("taskType") String taskType,
             @RequestParam("category") String category) {
-        return toDoRepository.findByIdAndTaskTypeAndCategory(id, taskType, category);
+        List<ToDo> todos = toDoRepository.findByIdAndTaskTypeAndCategory(id, taskType, category);
+        Type listType = new TypeToken<List<ToDoResponse>>() {}.getType();
+        List<ToDoResponse> todoResponses = modelMapper.map(todos, listType);
+        return ResponseEntity.ok(todoResponses);
     }
     @PutMapping("/{id}")
-    public ToDo updateToDo(@PathVariable UUID id, @RequestBody ToDo updatedToDo) {
+    public ResponseEntity <ToDoResponse> updateToDo(@PathVariable UUID id, @RequestBody ToDoRequest updatedToDoRequest) {
         ToDo existingToDo = (ToDo) toDoRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("TODO not found with id: " + id));
-        existingToDo.setPurpose(updatedToDo.getPurpose());
-        existingToDo.setAppointmentDate(updatedToDo.getAppointmentDate());
-        existingToDo.setImportant(updatedToDo.isImportant());
-        existingToDo.setTaskType(updatedToDo.getTaskType());
-        existingToDo.setTaskScheduled(updatedToDo.isTaskScheduled());
-        existingToDo.setCategory(updatedToDo.getCategory());
-        existingToDo.setUrgent(updatedToDo.isUrgent());
-        existingToDo.setDependency(updatedToDo.isDependency());
-        existingToDo.setSubject(updatedToDo.getSubject());
-        existingToDo.setPhoneNumber(updatedToDo.getPhoneNumber());
-        existingToDo.setToDoHistory(updatedToDo.getToDoHistory());
-        existingToDo.setNote(updatedToDo.getNote());
-        return toDoRepository.save(existingToDo);
+        existingToDo.setPurpose(updatedToDoRequest.getPurpose());
+        existingToDo.setAppointmentDate(updatedToDoRequest.getAppointmentDate());
+        existingToDo.setImportant(updatedToDoRequest.isImportant());
+        existingToDo.setTaskType(updatedToDoRequest.getTaskType());
+        existingToDo.setTaskScheduled(updatedToDoRequest.isTaskScheduled());
+        existingToDo.setCategory(updatedToDoRequest.getCategory());
+        existingToDo.setUrgent(updatedToDoRequest.isUrgent());
+        existingToDo.setDependency(updatedToDoRequest.isDependency());
+        existingToDo.setSubject(updatedToDoRequest.getSubject());
+        existingToDo.setPhoneNumber(updatedToDoRequest.getPhoneNumber());
+        existingToDo.setToDoHistory(updatedToDoRequest.getToDoHistory());
+        existingToDo.setNote(updatedToDoRequest.getNote());
+        ToDo savedToDo = toDoRepository.save(existingToDo);
+        ToDoResponse response = modelMapper.map(savedToDo, ToDoResponse.class);
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -21,17 +21,5 @@ public abstract class BaseEntity {
     private LocalDateTime updatedAt;
     private String createdBy;
     private String updatedBy;
-    private String taskType;
-    private boolean taskScheduled;
-    private String dueDate;
-    private boolean isUrgent;
-    private boolean isImportant;
-    private String purpose;
-    private boolean dependency;
-    private UUID pid;
-    private List<UUID> cid;
-    private boolean isParent;
-    private String category;
-    private UUID ownerId;
-    private String name;
+
 }
