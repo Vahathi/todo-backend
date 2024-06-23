@@ -13,6 +13,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventRequest {
+    private UUID ownerId;
+    private UUID pid;
+    private List<UUID> cid;
     private String createdBy;
     private String updatedBy;
     private String taskType;

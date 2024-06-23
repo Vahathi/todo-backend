@@ -13,6 +13,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MailRequest {
+    private UUID ownerId;
+    private UUID pid;
+    private List<UUID> cid;
     private int hierarchy;
     private String taskType;
     private String category;

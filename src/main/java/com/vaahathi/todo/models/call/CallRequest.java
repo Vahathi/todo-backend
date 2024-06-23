@@ -12,6 +12,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CallRequest {
+    private UUID ownerId;
+    private UUID pid;
+    private List<UUID> cid;
     private String taskType;
     private boolean taskScheduled;
     private String dueDate;

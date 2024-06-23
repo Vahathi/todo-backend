@@ -13,6 +13,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ToDoRequest {
+    private UUID ownerId;
+    private UUID pid;
+    private List<UUID> cid;
     private String taskType;
     private boolean TaskScheduled;
     private String appointmentDate;
