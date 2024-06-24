@@ -71,7 +71,6 @@ public class ToDoControllers {
         existingToDo.setCategory(updatedToDoRequest.getCategory());
         existingToDo.setUrgent(updatedToDoRequest.isUrgent());
         existingToDo.setDependency(updatedToDoRequest.isDependency());
-        existingToDo.setSubject(updatedToDoRequest.getSubject());
         existingToDo.setPhoneNumber(updatedToDoRequest.getPhoneNumber());
         existingToDo.setToDoHistory(updatedToDoRequest.getToDoHistory());
         existingToDo.setNote(updatedToDoRequest.getNote());
