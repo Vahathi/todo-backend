@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 @Entity
@@ -20,7 +21,7 @@ public class ToDo extends BaseEntity {
     private List<UUID> cid;
     private String taskType;
     private boolean TaskScheduled;
-    private String appointmentDate;
+    private LocalDateTime appointmentDate;
     private String category;
     private UUID ownerId;
     private boolean Urgent;

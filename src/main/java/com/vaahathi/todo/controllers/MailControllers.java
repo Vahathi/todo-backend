@@ -43,7 +43,6 @@ public class MailControllers {
     public ResponseEntity<MailResponse> createMail(@RequestBody MailRequest mailRequest) {
         mailRequest.setPersonName(mailRequest.getPersonName());
         mailRequest.setPurpose(mailRequest.getPurpose());
-        mailRequest.setDueDate(mailRequest.getDueDate());
         mailRequest.setImportant(!mailRequest.isImportant());
         Mail mail = modelMapper.map(mailRequest, Mail.class);
         Mail savedMail = mailRepository.save(mail);

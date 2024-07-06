@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 @Entity
@@ -17,10 +18,10 @@ public class Call extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private UUID pid;
-    private String taskType;
     private List<UUID> cid;
+    private String taskType;
     private boolean taskScheduled;
-    private String dueDate;
+    private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;

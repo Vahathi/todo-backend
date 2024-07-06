@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class ToDoResponse {
     private List<UUID> cid;
     private String taskType;
     private boolean TaskScheduled;
-    private String appointmentDate;
+    private LocalDateTime appointmentDate;
     private String category;
     private UUID ownerId;
     private boolean Urgent;

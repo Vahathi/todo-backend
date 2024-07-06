@@ -52,7 +52,6 @@ public class PaymentControllers {
 
     @PutMapping("/process")
     public ResponseEntity<PaymentResponse>  updatePayment(@RequestBody PaymentRequest paymentRequest) {
-        paymentRequest.setDueDate(paymentRequest.getDueDate());
         PaymentResponse response = modelMapper.map(paymentRequest, PaymentResponse.class);
         return ResponseEntity.ok(response);
     }

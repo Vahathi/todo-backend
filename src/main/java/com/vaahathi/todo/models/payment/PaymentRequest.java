@@ -19,7 +19,7 @@ public class PaymentRequest {
     private String category;
     private String hierarchy;
     private boolean taskScheduled;
-    private String dueDate;
+    private String scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;

@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 @Entity
@@ -16,13 +17,13 @@ public class BuySell extends BaseEntity {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String taskType;
     private String category;
     private UUID ownerId;
     private boolean taskScheduled;
-    private String dueDate;
+    private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
+    private String taskType;
     private String purpose;
     private boolean dependency;
     private String personName;

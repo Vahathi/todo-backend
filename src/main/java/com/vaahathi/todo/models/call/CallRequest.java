@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 @Component
@@ -17,7 +18,7 @@ public class CallRequest {
     private List<UUID> cid;
     private String taskType;
     private boolean taskScheduled;
-    private String dueDate;
+    private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;

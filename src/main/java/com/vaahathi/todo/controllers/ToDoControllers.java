@@ -64,7 +64,6 @@ public class ToDoControllers {
         ToDo existingToDo = (ToDo) toDoRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("TODO not found with id: " + id));
         existingToDo.setPurpose(updatedToDoRequest.getPurpose());
-        existingToDo.setAppointmentDate(updatedToDoRequest.getAppointmentDate());
         existingToDo.setImportant(updatedToDoRequest.isImportant());
         existingToDo.setTaskType(updatedToDoRequest.getTaskType());
         existingToDo.setTaskScheduled(updatedToDoRequest.isTaskScheduled());

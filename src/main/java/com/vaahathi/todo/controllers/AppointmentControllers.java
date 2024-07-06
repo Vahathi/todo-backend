@@ -1,12 +1,13 @@
 package com.vaahathi.todo.controllers;
 
 import com.vaahathi.todo.entity.Appointment;
-import com.vaahathi.todo.entity.Call;
-import com.vaahathi.todo.entity.ToDo;
+import com.vaahathi.todo.entity.TaskRelation;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.appointment.AppointmentRequest;
 import com.vaahathi.todo.models.appointment.AppointmentResponse;
 import com.vaahathi.todo.repository.AppointmentRepository;
+import com.vaahathi.todo.repository.TaskRelationRepository;
+import com.vaahathi.todo.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,8 +19,10 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,10 +32,16 @@ import java.util.UUID;
 @RequestMapping("/appointment")
 @Tag(name = "appointments", description = "Appointment maanagement APIs")
 public class AppointmentControllers {
-@Autowired
+
+    @Autowired
+    AppointmentService appointmentService;
+    @Autowired
     AppointmentRepository appointmentRepository;
-@Autowired
-private ModelMapper modelMapper;
+
+    @Autowired
+    TaskRelationRepository taskRelationRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
 @Operation(
         summary = "creating an appointment",
@@ -46,14 +55,12 @@ private ModelMapper modelMapper;
 
 
 @PostMapping ("/create")
-public ResponseEntity<AppointmentResponse>  createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
-    Appointment appointment = modelMapper.map(appointmentRequest, Appointment.class);
-    Appointment savedAppointment = appointmentRepository.save(appointment);
-    AppointmentResponse appointmentResponse = modelMapper.map(savedAppointment, AppointmentResponse.class);
+public ResponseEntity<AppointmentResponse>  createAppointment(@RequestBody AppointmentRequest appointmentRequest) throws Exception {
+    AppointmentResponse appointmentResponse = appointmentService.CreateAppointmentAndUpdateTaskRel(appointmentRequest);
     return ResponseEntity.ok(appointmentResponse);
 }
 @GetMapping ("/List")
-public ResponseEntity <List<AppointmentResponse>> getAppointments(
+public ResponseEntity <List<AppointmentResponse>> getrootAppointments(
         @RequestParam("category") String category,
         @RequestParam("ownerId") UUID ownerId,
         @RequestParam("taskType") String taskType) {
@@ -68,7 +75,6 @@ public ResponseEntity <List<AppointmentResponse>> getAppointments(
                 new ResourceNotFoundException("Appointment not found with id: " + id));
         existingAppointment.setTaskType(updatedAppointmentRequest.getTaskType());
         existingAppointment.setTaskScheduled(updatedAppointmentRequest.isTaskScheduled());
-        existingAppointment.setDueDate(updatedAppointmentRequest.getDueDate());
         existingAppointment.setUrgent(updatedAppointmentRequest.isUrgent());
         existingAppointment.setImportant(updatedAppointmentRequest.isImportant());
         existingAppointment.setPurpose(updatedAppointmentRequest.getPurpose());

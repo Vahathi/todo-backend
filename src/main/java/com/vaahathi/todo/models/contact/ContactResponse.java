@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -13,6 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ContactResponse {
     private UUID id;
+    private UUID pid;
+    private List<UUID> cid;
     private String name;
     private String nickName;
     private long phone;

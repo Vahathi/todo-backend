@@ -63,7 +63,6 @@ public class CallControllers {
     ) {
         Call existingCall = callRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Call not found with "+id));
         existingCall.setTaskScheduled(updatedCallRequest.isTaskScheduled());
-        existingCall.setDueDate(updatedCallRequest.getDueDate());
         existingCall.setUrgent(updatedCallRequest.isUrgent());
         existingCall.setImportant(updatedCallRequest.isImportant());
         existingCall.setPurpose(updatedCallRequest.getPurpose());
