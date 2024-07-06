@@ -26,7 +26,6 @@ public class ToDoResponse {
     private boolean Important;
     private String purpose;
     private boolean dependency;
-    private String subject;
     private long phoneNumber;
     private String toDoHistory;
     private String note;

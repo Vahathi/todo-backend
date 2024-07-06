@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
-    username: baeldung
-    password: baeldung
+    username: postgres
+    password: Alaska@63
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
@@ -18,7 +18,7 @@ spring:
             dev-url: http://localhost:8081
             test:
               openapi:
-                dev-url: http://localhost:8080
+                dev-url: http://localhost:8081
                 prod-url: http://phoenixapi.ddns.net:9000/
             springdoc:
               packages-to-scan: com.vahathi.test.controller
@@ -32,5 +32,8 @@ spring:
                     org:
                       hibernate:
                         type: trace
+server:
+     port: 8081
+
 
 

@@ -81,7 +81,9 @@ public ResponseEntity <List<AppointmentResponse>> getrootAppointments(
         existingAppointment.setDependency(updatedAppointmentRequest.isDependency());
         existingAppointment.setPersonName(updatedAppointmentRequest.getPersonName());
         existingAppointment.setPhoneNumber(updatedAppointmentRequest.getPhoneNumber());
-        modelMapper.map(updatedAppointmentRequest, existingAppointment);
+        existingAppointment.setCid(updatedAppointmentRequest.getCid());
+        existingAppointment.setPid(updatedAppointmentRequest.getPid());
+      //  modelMapper.map(updatedAppointmentRequest, existingAppointment);
 
         Appointment updatedAppointment = appointmentRepository.save(existingAppointment);
         AppointmentResponse appointmentResponse = modelMapper.map(updatedAppointment, AppointmentResponse.class);
