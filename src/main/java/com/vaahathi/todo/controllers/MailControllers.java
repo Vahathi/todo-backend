@@ -1,6 +1,10 @@
 package com.vaahathi.todo.controllers;
 
+import com.vaahathi.todo.entity.Appointment;
 import com.vaahathi.todo.entity.Mail;
+import com.vaahathi.todo.exceptions.ResourceNotFoundException;
+import com.vaahathi.todo.models.appointment.AppointmentRequest;
+import com.vaahathi.todo.models.appointment.AppointmentResponse;
 import com.vaahathi.todo.models.mail.MailRequest;
 import com.vaahathi.todo.models.mail.MailResponse;
 import com.vaahathi.todo.repository.MailRepository;
@@ -57,5 +61,24 @@ public class MailControllers {
         Type listType = new TypeToken<List<MailResponse>>() {}.getType();
         List<MailResponse> mailResponses = modelMapper.map(mails, listType);
         return ResponseEntity.ok(mailResponses);
+    }
+    @PutMapping("/update")
+    public ResponseEntity<MailResponse> updateMail(@PathVariable UUID id, @RequestBody MailRequest updatedMailRequest) {
+        Mail existingMail=  mailRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Appointment not found with id: " + id));
+        existingMail.setTaskType(updatedMailRequest.getTaskType());
+        existingMail.setTaskScheduled(updatedMailRequest.isTaskScheduled());
+        existingMail.setUrgent(updatedMailRequest.isUrgent());
+        existingMail.setImportant(updatedMailRequest.isImportant());
+        existingMail.setPurpose(updatedMailRequest.getPurpose());
+        existingMail.setDependency(updatedMailRequest.isDependency());
+        existingMail.setPersonName(updatedMailRequest.getPersonName());
+        existingMail.setCid(updatedMailRequest.getCid());
+        existingMail.setPid(updatedMailRequest.getPid());
+        //  modelMapper.map(updatedMailRequest, existingMail);
+
+        Mail updatedMail = mailRepository.save(existingMail);
+        MailResponse mailResponse = modelMapper.map(updatedMail, MailResponse.class);
+        return ResponseEntity.ok(mailResponse);
     }
 }

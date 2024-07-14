@@ -43,7 +43,7 @@ public class EventControllers {
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PostMapping("/create")
     public ResponseEntity<EventResponse>  createEvent(@RequestBody EventRequest eventRequest) throws Exception {
-        if (eventRequest.getPid() == null){
+        if (eventRequest.isParent()) {
             eventRequest.setName(eventRequest.getName());
             eventRequest.setPurpose(eventRequest.getPurpose());
             Event event = modelMapper.map(eventRequest, Event.class);
@@ -56,8 +56,28 @@ public class EventControllers {
             taskRelationRepository.save(currentTaskRelation);
             EventResponse eventResponse = modelMapper.map(savedEvent, EventResponse.class);
             return ResponseEntity.ok(eventResponse);
-        }else {
-            throw new Exception("Event cannot have pid");
+        } else {
+            Event parentEvent = eventRepository.findById(eventRequest.getPid())
+                    .orElseThrow(() -> new Exception("Parent event not found"));
+
+            Event childEvent = modelMapper.map(eventRequest, Event.class);
+            Event savedChildEvent = eventRepository.save(childEvent);
+
+            // Update task relation
+            TaskRelation parentTaskRelation = taskRelationRepository.findById(parentEvent.getId())
+                    .orElseThrow(() -> new Exception("Parent task relation not found"));
+
+            List<UUID> childIds = parentTaskRelation.getCid();
+            if (childIds == null) {
+                childIds = new ArrayList<>();
+                parentTaskRelation.setCid(childIds);
+            }
+            childIds.add(savedChildEvent.getId());
+
+            taskRelationRepository.save(parentTaskRelation);
+
+            EventResponse eventResponse = modelMapper.map(savedChildEvent, EventResponse.class);
+            return ResponseEntity.ok(eventResponse);
         }
 
     }

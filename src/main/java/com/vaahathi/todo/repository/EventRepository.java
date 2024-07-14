@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 @Repository
-public interface EventRepository extends JpaRepository<Event, String> {
+public interface EventRepository extends JpaRepository<Event, UUID> {
     List<Event>findByCategoryAndOwnerIdAndIsParent(String category, UUID ownerId, boolean isParent);
 }

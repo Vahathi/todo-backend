@@ -37,7 +37,6 @@ public class ToDoControllers {
                     content = @Content(schema = @Schema(implementation = ToDo.class))),
             @ApiResponse(responseCode = "404", description = "Resource not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
-
     @PostMapping("/create")
     public ResponseEntity <ToDoResponse> createToDo(@RequestBody ToDoRequest toDoRequest) {
         toDoRequest.setPurpose(toDoRequest.getPurpose());
