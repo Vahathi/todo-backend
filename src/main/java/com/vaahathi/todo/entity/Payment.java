@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class Payments extends BaseEntity {
+public class Payment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

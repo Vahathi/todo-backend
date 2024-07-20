@@ -1,6 +1,10 @@
 package com.vaahathi.todo.controllers;
 
+import com.vaahathi.todo.entity.Appointment;
 import com.vaahathi.todo.entity.Contact;
+import com.vaahathi.todo.exceptions.ResourceNotFoundException;
+import com.vaahathi.todo.models.appointment.AppointmentRequest;
+import com.vaahathi.todo.models.appointment.AppointmentResponse;
 import com.vaahathi.todo.models.contact.ContactRequest;
 import com.vaahathi.todo.models.contact.ContactResponse;
 import com.vaahathi.todo.repository.ContactRepository;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/contacts")
@@ -37,8 +42,8 @@ public class ContactControllers {
 
     @PostMapping("/create")
     public ContactResponse createContact(@RequestBody ContactRequest contactRequest) {
-        contactRequest.setName(contactRequest.getName());
-        contactRequest.setPhone(contactRequest.getPhone());
+        contactRequest.setPersonName(contactRequest.getPersonName());
+        contactRequest.setPhoneNumber(contactRequest.getPhoneNumber());
         Contact contact = modelMapper.map(contactRequest, Contact.class);
         return modelMapper.map(contact, ContactResponse.class);
     }
@@ -48,6 +53,23 @@ public class ContactControllers {
         Type listType = new TypeToken<List<ContactResponse>>() {}.getType();
         List<ContactResponse> contactResponses = modelMapper.map(contacts, listType);
         return ResponseEntity.ok(contactResponses);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<ContactResponse> updateContact(@PathVariable UUID id, @RequestBody ContactRequest updatedContactRequest) {
+        Contact existingContact =  contactRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Appointment not found with id: " + id));
+        existingContact.setTaskScheduled(updatedContactRequest.isTaskScheduled());
+        existingContact.setUrgent(updatedContactRequest.isUrgent());
+        existingContact.setImportant(updatedContactRequest.isImportant());
+        existingContact.setPurpose(updatedContactRequest.getPurpose());
+        existingContact.setDependency(updatedContactRequest.isDependency());
+        existingContact.setPersonName(updatedContactRequest.getPersonName());
+        existingContact.setPhoneNumber(updatedContactRequest.getPhoneNumber());
+        existingContact.setCid(updatedContactRequest.getCid());
+        existingContact.setPid(updatedContactRequest.getPid());
+        Contact updatedContact = contactRepository.save(existingContact);
+        ContactResponse contactResponse = modelMapper.map(updatedContact, ContactResponse.class);
+        return ResponseEntity.ok(contactResponse);
     }
 }
 

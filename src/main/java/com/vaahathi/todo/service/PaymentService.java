@@ -1,10 +1,10 @@
 package com.vaahathi.todo.service;
 
-import com.vaahathi.todo.entity.Payments;
+import com.vaahathi.todo.entity.Payment;
 import com.vaahathi.todo.entity.TaskRelation;
 import com.vaahathi.todo.models.mail.MailResponse;
 import com.vaahathi.todo.models.payment.PaymentRequest;
-import com.vaahathi.todo.repository.PaymentsRepository;
+import com.vaahathi.todo.repository.PaymentRepository;
 import com.vaahathi.todo.repository.TaskRelationRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -20,7 +20,7 @@ public class PaymentService {
     TaskRelationRepository taskRelationRepository;
 
     @Autowired
-   PaymentsRepository paymentsRepository;
+    PaymentRepository paymentsRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -31,8 +31,8 @@ public class PaymentService {
             throw new Exception("PID cannot be empty");
         }
         else {
-            Payments payments = modelMapper.map(paymentRequest, Payments.class);
-            Payments savedPayment = paymentsRepository.save(payments);
+            Payment payments = modelMapper.map(paymentRequest, Payment.class);
+            Payment savedPayment = paymentsRepository.save(payments);
             // adding a record in task relation table
             TaskRelation taskRelation= new TaskRelation();
             taskRelation.setId(savedPayment.getId());

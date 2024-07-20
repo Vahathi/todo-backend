@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 @Entity
@@ -18,14 +19,20 @@ public class Contact extends BaseEntity {
    private UUID id;
    private UUID pid;
    private List<UUID> cid;
-   private String name;
+   private String PersonName;
    private String nickName;
-   private long phone;
-   private long altPhone;
+   private long phoneNumber;
+   private long altPhoneNumber;
    private String personalEMail;
    private String officeEmail;
    private String webpage;
    private String category;
    private UUID ownerId;
    private String note;
+   private boolean taskScheduled;
+   private LocalDateTime scheduledDate;
+   private boolean isUrgent;
+   private boolean isImportant;
+   private String purpose;
+   private boolean dependency;
 }

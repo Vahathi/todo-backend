@@ -1,10 +1,7 @@
 package com.vaahathi.todo.controllers;
 
-import com.vaahathi.todo.entity.Appointment;
-import com.vaahathi.todo.entity.Call;
-import com.vaahathi.todo.repository.AppointmentRepository;
-import com.vaahathi.todo.repository.CallRepository;
-import com.vaahathi.todo.repository.TaskRelationRepository;
+import com.vaahathi.todo.entity.*;
+import com.vaahathi.todo.repository.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,6 +29,16 @@ public class SubtaskControllers {
     AppointmentRepository appointmentRepository;
     @Autowired
     CallRepository callRepository;
+    @Autowired
+    ContactRepository contactRepository;
+    @Autowired
+    EventRepository eventRepository;
+    @Autowired
+    MailRepository mailRepository;
+    @Autowired
+    PaymentRepository paymentRepository;
+    @Autowired
+    ToDoRepository toDoRepository;
     @Autowired
     TaskRelationRepository taskRelationRepository;
     @Autowired
@@ -67,7 +74,26 @@ public ResponseEntity <List<Object>> getSubtasks(
                 List<Call> calls =callRepository.findAllById(childrenId);
                 allsubtasks.addAll(calls);
                 break;
-
+            case "contact":
+                List<Contact> contacts =contactRepository.findAllById(childrenId);
+                allsubtasks.addAll(contacts);
+                break;
+            case "event":
+                List<Event> events =eventRepository.findAllById(childrenId);
+                allsubtasks.addAll(events);
+                break;
+            case "mail":
+                List<Mail> mails =mailRepository.findAllById(childrenId);
+                allsubtasks.addAll(mails);
+                break;
+            case "payment":
+                List<Payment> payments =paymentRepository.findAllById(childrenId);
+                allsubtasks.addAll(payments);
+                break;
+            case "todo":
+                List<ToDo> todos =toDoRepository.findAllById(childrenId);
+                allsubtasks.addAll(todos);
+                break;
         }
 
     }

@@ -1,9 +1,9 @@
 package com.vaahathi.todo.controllers;
 
-import com.vaahathi.todo.entity.Payments;
+import com.vaahathi.todo.entity.Payment;
 import com.vaahathi.todo.models.payment.PaymentRequest;
 import com.vaahathi.todo.models.payment.PaymentResponse;
-import com.vaahathi.todo.repository.PaymentsRepository;
+import com.vaahathi.todo.repository.PaymentRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequestMapping("/payment")
 public class PaymentControllers {
     @Autowired
-    PaymentsRepository paymentsRepository;
+    PaymentRepository paymentsRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -32,7 +32,7 @@ public class PaymentControllers {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "payment processed successfully",
-                    content = @Content(schema = @Schema(implementation = Payments.class))),
+                    content = @Content(schema = @Schema(implementation = Payment.class))),
             @ApiResponse(responseCode = "404", description = "Resource not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PostMapping("/process")
@@ -50,7 +50,7 @@ public class PaymentControllers {
         return true;
     }
 
-    @PutMapping("/process")
+    @PutMapping("/id")
     public ResponseEntity<PaymentResponse>  updatePayment(@RequestBody PaymentRequest paymentRequest) {
         PaymentResponse response = modelMapper.map(paymentRequest, PaymentResponse.class);
         return ResponseEntity.ok(response);
