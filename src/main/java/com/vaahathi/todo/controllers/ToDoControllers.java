@@ -50,10 +50,10 @@ public class ToDoControllers {
     }
     @GetMapping("/list")
     public ResponseEntity<List<ToDoResponse>>getToDoList(
-            @RequestParam("id") UUID id,
+            @RequestParam("OwnerId") UUID OwnerId,
             @RequestParam("taskType") String taskType,
             @RequestParam("category") String category) {
-        List<ToDo> todos = toDoRepository.findByIdAndTaskTypeAndCategory(id, taskType, category);
+        List<ToDo> todos = toDoRepository.findByIdAndTaskTypeAndCategory(OwnerId, taskType, category);
         Type listType = new TypeToken<List<ToDoResponse>>() {}.getType();
         List<ToDoResponse> todoResponses = modelMapper.map(todos, listType);
         return ResponseEntity.ok(todoResponses);
