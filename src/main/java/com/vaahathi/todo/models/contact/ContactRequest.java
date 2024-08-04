@@ -1,5 +1,8 @@
 package com.vaahathi.todo.models.contact;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,10 +17,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactRequest {
-    private UUID ownerId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String PersonName;
+    private String personName;
     private String nickName;
     private long phoneNumber;
     private long altPhoneNumber;
@@ -25,6 +30,7 @@ public class ContactRequest {
     private String officeEmail;
     private String webpage;
     private String category;
+    private UUID ownerId;
     private String note;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;

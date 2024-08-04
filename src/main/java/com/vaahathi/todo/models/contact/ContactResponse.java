@@ -16,7 +16,7 @@ public class ContactResponse {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String name;
+    private String name;  // This will map to PersonName
     private String nickName;
     private long phone;
     private long altPhone;
