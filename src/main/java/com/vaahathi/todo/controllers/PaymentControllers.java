@@ -4,6 +4,7 @@ import com.vaahathi.todo.entity.Payment;
 import com.vaahathi.todo.models.payment.PaymentRequest;
 import com.vaahathi.todo.models.payment.PaymentResponse;
 import com.vaahathi.todo.repository.PaymentRepository;
+import com.vaahathi.todo.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,6 +23,8 @@ import java.util.UUID;
 @RequestMapping("/payment")
 public class PaymentControllers {
     @Autowired
+    PaymentService paymentService;
+    @Autowired
     PaymentRepository paymentsRepository;
     @Autowired
     private ModelMapper modelMapper;
@@ -36,19 +39,11 @@ public class PaymentControllers {
             @ApiResponse(responseCode = "404", description = "Resource not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PostMapping("/process")
-    public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest paymentRequest) {
-        boolean paymentSuccessful = processPaymentLogic(paymentRequest);
-        PaymentResponse paymentResponse;
-        if (paymentSuccessful) {
-            paymentResponse = new PaymentResponse("payment processed successfully");
-        } else {
-            paymentResponse = new PaymentResponse("payment processing failed");
-        }
+    public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest paymentRequest) throws Exception {
+        PaymentResponse paymentResponse = paymentService.createPaymentTaskRel(paymentRequest);
         return ResponseEntity.ok(paymentResponse);
     }
-    private boolean processPaymentLogic(PaymentRequest paymentRequest) {
-        return true;
-    }
+
 
     @PutMapping("/id")
     public ResponseEntity<PaymentResponse>  updatePayment(@RequestBody PaymentRequest paymentRequest) {

@@ -4,6 +4,7 @@ import com.vaahathi.todo.entity.Payment;
 import com.vaahathi.todo.entity.TaskRelation;
 import com.vaahathi.todo.models.mail.MailResponse;
 import com.vaahathi.todo.models.payment.PaymentRequest;
+import com.vaahathi.todo.models.payment.PaymentResponse;
 import com.vaahathi.todo.repository.PaymentRepository;
 import com.vaahathi.todo.repository.TaskRelationRepository;
 import jakarta.transaction.Transactional;
@@ -26,7 +27,7 @@ public class PaymentService {
     private ModelMapper modelMapper;
 
     @Transactional
-    public MailResponse createpaymentTaskRel(PaymentRequest paymentRequest) throws Exception {
+    public PaymentResponse createPaymentTaskRel(PaymentRequest paymentRequest) throws Exception {
         if(paymentRequest.getPid() == null){
             throw new Exception("PID cannot be empty");
         }
@@ -47,7 +48,7 @@ public class PaymentService {
                 taskRelationRepository.save(parentRelation);
             }else{ throw new Exception("cant find parent with pid");}
 
-            return modelMapper.map(savedPayment, MailResponse.class);
+            return modelMapper.map(savedPayment, PaymentResponse.class);
         }
     }
 }
