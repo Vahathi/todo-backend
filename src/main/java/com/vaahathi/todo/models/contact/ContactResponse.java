@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,10 +17,10 @@ public class ContactResponse {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String name;  // This will map to PersonName
+    private String personName;
     private String nickName;
-    private long phone;
-    private long altPhone;
+    private long phoneNumber;
+    private long altPhoneNumber;
     private String personalEMail;
     private String officeEmail;
     private String webpage;
@@ -27,4 +28,10 @@ public class ContactResponse {
     private String category;
     private UUID ownerId;
     private String note;
+    private boolean taskScheduled;
+    private LocalDateTime scheduledDate;
+    private boolean isUrgent;
+    private boolean isImportant;
+    private String purpose;
+    private boolean dependency;
 }

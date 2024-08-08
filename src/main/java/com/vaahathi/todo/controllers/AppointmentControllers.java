@@ -1,7 +1,6 @@
 package com.vaahathi.todo.controllers;
 
 import com.vaahathi.todo.entity.Appointment;
-import com.vaahathi.todo.entity.TaskRelation;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.appointment.AppointmentRequest;
 import com.vaahathi.todo.models.appointment.AppointmentResponse;
@@ -19,10 +18,8 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,16 +52,21 @@ public class AppointmentControllers {
 
 
 @PostMapping ("/create")
-public ResponseEntity<AppointmentResponse>  createAppointment(@RequestBody AppointmentRequest appointmentRequest) throws Exception {
-    AppointmentResponse appointmentResponse = appointmentService.CreateAppointmentAndUpdateTaskRel(appointmentRequest);
+public ResponseEntity<AppointmentResponse> createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+    appointmentRequest.setPersonName(appointmentRequest.getPersonName());
+    appointmentRequest.setPurpose(appointmentRequest.getPurpose());
+    appointmentRequest.setImportant(!appointmentRequest.isImportant());
+    Appointment appointment= modelMapper.map(appointmentRequest, Appointment.class);
+    Appointment savedAppointment = appointmentRepository.save(appointment);
+    AppointmentResponse appointmentResponse = modelMapper.map(savedAppointment, AppointmentResponse.class);
     return ResponseEntity.ok(appointmentResponse);
 }
 @GetMapping ("/List")
-public ResponseEntity <List<AppointmentResponse>> getrootAppointments(
-        @RequestParam("category") String category,
+public ResponseEntity <List<AppointmentResponse>> getAppointments(
         @RequestParam("ownerId") UUID ownerId,
-        @RequestParam("taskType") String taskType) {
-    List<Appointment> appointments = appointmentRepository.findByCategoryAndOwnerIdAndTaskType(category, ownerId, taskType);
+        @RequestParam("taskType") String taskType,
+        @RequestParam("category") String category) {
+    List<Appointment> appointments = appointmentRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId , taskType ,category);
     Type listType = new TypeToken<List<AppointmentResponse>>() {}.getType();
     List<AppointmentResponse> appointmentResponses = modelMapper.map(appointments, listType);
     return ResponseEntity.ok(appointmentResponses);

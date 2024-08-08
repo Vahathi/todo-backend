@@ -2,8 +2,11 @@ package com.vaahathi.todo.controllers;
 
 import com.vaahathi.todo.entity.Event;
 import com.vaahathi.todo.entity.TaskRelation;
+import com.vaahathi.todo.entity.ToDo;
+import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.event.EventRequest;
 import com.vaahathi.todo.models.event.EventResponse;
+import com.vaahathi.todo.models.todo.ToDoResponse;
 import com.vaahathi.todo.repository.EventRepository;
 import com.vaahathi.todo.repository.TaskRelationRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -91,6 +94,48 @@ public class EventControllers {
         List<EventResponse> eventResponses = modelMapper.map(events, listType);
         return ResponseEntity.ok(eventResponses);
     }
-
+    @PutMapping("/{id}")
+    public ResponseEntity <EventResponse> updateEvent(@PathVariable UUID id, @RequestBody EventRequest updatedEventRequest) {
+        Event existingEvent = (Event) eventRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Event not found with id: " + id));
+        existingEvent.setPurpose(updatedEventRequest.getPurpose());
+        existingEvent.setImportant(updatedEventRequest.isImportant());
+        existingEvent.setTaskType(updatedEventRequest.getTaskType());
+        existingEvent.setTaskScheduled(updatedEventRequest.isTaskScheduled());
+        existingEvent.setCategory(updatedEventRequest.getCategory());
+        existingEvent.setUrgent(updatedEventRequest.isUrgent());
+        existingEvent.setDependency(updatedEventRequest.isDependency());
+        Event savedEvent = eventRepository.save(existingEvent);
+        EventResponse response = modelMapper.map(savedEvent, EventResponse.class);
+        return ResponseEntity.ok(response);
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

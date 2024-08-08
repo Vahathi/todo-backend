@@ -14,18 +14,19 @@ import java.util.UUID;
 @Entity
 @Data
 public class Contact extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
    private UUID id;
    private UUID pid;
    private List<UUID> cid;
-   private String PersonName;
+   private String personName;
    private String nickName;
    private long phoneNumber;
    private long altPhoneNumber;
    private String personalEMail;
    private String officeEmail;
    private String webpage;
+   private String taskType;
    private String category;
    private UUID ownerId;
    private String note;

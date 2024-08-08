@@ -13,7 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentResponse {
-    private String message;
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
@@ -37,7 +36,5 @@ public class PaymentResponse {
     private int paidStatus;
     private String paidOn;
     private String paymentHistory;
-    public PaymentResponse(String message){
-        this.message = message;
-    }
+    private String message;
 }

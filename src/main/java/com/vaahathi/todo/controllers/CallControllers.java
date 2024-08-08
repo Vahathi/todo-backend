@@ -50,10 +50,10 @@ public class CallControllers {
         }
     @GetMapping("/list")
     public ResponseEntity<List<CallResponse> >getCallList(
-            @RequestParam("category") String category,
             @RequestParam("ownerId") UUID ownerId,
-            @RequestParam("taskType") String taskType) {
-        List<Call> calls = callRepository.findByCategoryAndOwnerIdAndTaskType(category, ownerId, taskType);
+            @RequestParam("taskType") String taskType,
+            @RequestParam("category") String category) {
+        List<Call> calls = callRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, taskType, category);
         Type listType = new TypeToken<List<CallResponse>>() {}.getType();
         List<CallResponse> callResponses = modelMapper.map(calls, listType);
         return ResponseEntity.ok(callResponses);
@@ -72,7 +72,6 @@ public class CallControllers {
         existingCall.setPhoneNumber(updatedCallRequest.getPhoneNumber());
         existingCall.setCallNote(updatedCallRequest.getCallNote());
         modelMapper.map(updatedCallRequest, existingCall);
-
         Call updatedCall = callRepository.save(existingCall);
         CallResponse callResponse = modelMapper.map(updatedCall, CallResponse.class);
         return ResponseEntity.ok(callResponse);

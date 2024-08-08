@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.UUID;
 @Repository
 public interface MailRepository extends JpaRepository<Mail, UUID> {
-    List<Mail> findByCategoryAndOwnerIdAndTaskType(String category, UUID ownerId, String taskType);
+    List<Mail> findByOwnerIdAndTaskTypeAndCategory(UUID ownerId, String taskType, String category);
 }
 

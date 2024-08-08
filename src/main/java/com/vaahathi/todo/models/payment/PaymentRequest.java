@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 @Component
@@ -19,7 +20,7 @@ public class PaymentRequest {
     private String category;
     private String hierarchy;
     private boolean taskScheduled;
-    private String scheduledDate;
+    private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
@@ -34,4 +35,6 @@ public class PaymentRequest {
     private int paidStatus;
     private String paidOn;
     private String paymentHistory;
+    private String message;
+
 }

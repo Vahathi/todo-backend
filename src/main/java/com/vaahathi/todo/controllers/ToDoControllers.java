@@ -50,10 +50,10 @@ public class ToDoControllers {
     }
     @GetMapping("/list")
     public ResponseEntity<List<ToDoResponse>>getToDoList(
-            @RequestParam("OwnerId") UUID OwnerId,
+            @RequestParam("OwnerId") UUID ownerId,
             @RequestParam("taskType") String taskType,
             @RequestParam("category") String category) {
-        List<ToDo> todos = toDoRepository.findByOwnerIdAndTaskTypeAndCategory(OwnerId, taskType, category);
+        List<ToDo> todos = toDoRepository.findByOwnerIdAndTaskTypeAndCategory( ownerId, taskType, category);
         Type listType = new TypeToken<List<ToDoResponse>>() {}.getType();
         List<ToDoResponse> todoResponses = modelMapper.map(todos, listType);
         return ResponseEntity.ok(todoResponses);
@@ -76,5 +76,4 @@ public class ToDoControllers {
         ToDoResponse response = modelMapper.map(savedToDo, ToDoResponse.class);
         return ResponseEntity.ok(response);
     }
-
 }

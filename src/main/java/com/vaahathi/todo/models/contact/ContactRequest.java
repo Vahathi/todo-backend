@@ -17,9 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactRequest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private UUID ownerId;
     private UUID pid;
     private List<UUID> cid;
     private String personName;
@@ -29,8 +27,8 @@ public class ContactRequest {
     private String personalEMail;
     private String officeEmail;
     private String webpage;
+    private String taskType;
     private String category;
-    private UUID ownerId;
     private String note;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;

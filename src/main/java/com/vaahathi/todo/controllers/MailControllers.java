@@ -2,11 +2,14 @@ package com.vaahathi.todo.controllers;
 
 import com.vaahathi.todo.entity.Appointment;
 import com.vaahathi.todo.entity.Mail;
+import com.vaahathi.todo.entity.ToDo;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.appointment.AppointmentRequest;
 import com.vaahathi.todo.models.appointment.AppointmentResponse;
 import com.vaahathi.todo.models.mail.MailRequest;
 import com.vaahathi.todo.models.mail.MailResponse;
+import com.vaahathi.todo.models.todo.ToDoRequest;
+import com.vaahathi.todo.models.todo.ToDoResponse;
 import com.vaahathi.todo.repository.MailRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -54,15 +57,16 @@ public class MailControllers {
         return ResponseEntity.ok(mailResponse);
     }
     @GetMapping("/list")
-    public ResponseEntity<List<MailResponse>>getMails(@RequestParam("category") String category,
-                               @RequestParam("ownerId") UUID ownerId,
-                               @RequestParam("taskType") String taskType) {
-        List<Mail> mails = mailRepository.findByCategoryAndOwnerIdAndTaskType(category, ownerId, taskType);
+    public ResponseEntity<List<MailResponse>>getMails
+                               (@RequestParam("ownerId") UUID ownerId,
+                               @RequestParam("taskType") String taskType,
+                               @RequestParam("category") String category) {
+        List<Mail> mails = mailRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, taskType, category);
         Type listType = new TypeToken<List<MailResponse>>() {}.getType();
         List<MailResponse> mailResponses = modelMapper.map(mails, listType);
         return ResponseEntity.ok(mailResponses);
     }
-    @PutMapping("/update")
+    @PutMapping("/{id}")
     public ResponseEntity<MailResponse> updateMail(@PathVariable UUID id, @RequestBody MailRequest updatedMailRequest) {
         Mail existingMail=  mailRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Appointment not found with id: " + id));

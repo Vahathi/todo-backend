@@ -24,7 +24,7 @@ public class Appointment extends BaseEntity{
  private List<UUID> cid;
  private String taskType;
  private boolean taskScheduled;
- private LocalDateTime  dueDate;
+ private LocalDateTime scheduledDate;
  private boolean isUrgent;
  private boolean isImportant;
  private String purpose;

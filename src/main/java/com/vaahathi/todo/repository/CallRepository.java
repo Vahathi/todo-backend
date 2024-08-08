@@ -12,5 +12,5 @@ import java.util.List;
 import java.util.UUID;
 @Repository
 public interface CallRepository extends JpaRepository<Call, UUID> {
-    List<Call> findByCategoryAndOwnerIdAndTaskType(String category, UUID ownerId, String taskType);
+    List<Call>findByOwnerIdAndTaskTypeAndCategory(UUID ownerId, String taskType, String category);
 }

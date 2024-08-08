@@ -1,10 +1,10 @@
 package com.vaahathi.todo.controllers;
 
-import com.vaahathi.todo.entity.Appointment;
+import com.vaahathi.todo.entity.Call;
 import com.vaahathi.todo.entity.Contact;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
-import com.vaahathi.todo.models.appointment.AppointmentRequest;
-import com.vaahathi.todo.models.appointment.AppointmentResponse;
+import com.vaahathi.todo.models.call.CallRequest;
+import com.vaahathi.todo.models.call.CallResponse;
 import com.vaahathi.todo.models.contact.ContactRequest;
 import com.vaahathi.todo.models.contact.ContactResponse;
 import com.vaahathi.todo.repository.ContactRepository;
@@ -25,7 +25,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/contacts")
-public class ContactControllers {
+public class ContactController {
     @Autowired
     ContactRepository contactRepository;
     @Autowired
@@ -41,15 +41,18 @@ public class ContactControllers {
             @ApiResponse(responseCode = "500", description = "Internal server error")})
 
     @PostMapping("/create")
-    public ContactResponse createContact(@RequestBody ContactRequest contactRequest) {
-        contactRequest.setPersonName(contactRequest.getPersonName());
-        contactRequest.setPhoneNumber(contactRequest.getPhoneNumber());
+    public ResponseEntity <ContactResponse> createContact(@RequestBody ContactRequest contactRequest) {
         Contact contact = modelMapper.map(contactRequest, Contact.class);
-        return modelMapper.map(contact, ContactResponse.class);
+        Contact savedContact= contactRepository.save(contact);
+        ContactResponse contactResponse = modelMapper.map(savedContact, ContactResponse.class);
+        return ResponseEntity.ok(contactResponse);
     }
     @GetMapping("/List")
-    public ResponseEntity<List<ContactResponse>> getAllContacts() {
-        List<Contact> contacts = contactRepository.findAll();
+    public ResponseEntity <List<ContactResponse>> getContacts(
+            @RequestParam("ownerId")  UUID ownerId,
+            @RequestParam("category") String category,
+            @RequestParam("personName") String personName) {
+        List<Contact> contacts = contactRepository.findByOwnerIdAndCategoryAndPersonName(ownerId, category, personName);
         Type listType = new TypeToken<List<ContactResponse>>() {}.getType();
         List<ContactResponse> contactResponses = modelMapper.map(contacts, listType);
         return ResponseEntity.ok(contactResponses);
@@ -57,7 +60,7 @@ public class ContactControllers {
     @PutMapping("/{id}")
     public ResponseEntity<ContactResponse> updateContact(@PathVariable UUID id, @RequestBody ContactRequest updatedContactRequest) {
         Contact existingContact =  contactRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Appointment not found with id: " + id));
+                new ResourceNotFoundException("Contact not found with id: " + id));
         existingContact.setTaskScheduled(updatedContactRequest.isTaskScheduled());
         existingContact.setUrgent(updatedContactRequest.isUrgent());
         existingContact.setImportant(updatedContactRequest.isImportant());

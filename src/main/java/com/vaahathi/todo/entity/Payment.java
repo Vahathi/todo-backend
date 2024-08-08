@@ -38,4 +38,5 @@ public class Payment extends BaseEntity {
     private int paidStatus;
     private String paidOn;
     private String paymentHistory;
+    private String message;
 }
