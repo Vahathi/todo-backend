@@ -50,9 +50,8 @@ public class ContactController {
     @GetMapping("/List")
     public ResponseEntity <List<ContactResponse>> getContacts(
             @RequestParam("ownerId")  UUID ownerId,
-            @RequestParam("category") String category,
-            @RequestParam("personName") String personName) {
-        List<Contact> contacts = contactRepository.findByOwnerIdAndCategoryAndPersonName(ownerId, category, personName);
+            @RequestParam("category") String category) {
+        List<Contact> contacts = contactRepository.findByOwnerIdAndCategory(ownerId, category);
         Type listType = new TypeToken<List<ContactResponse>>() {}.getType();
         List<ContactResponse> contactResponses = modelMapper.map(contacts, listType);
         return ResponseEntity.ok(contactResponses);

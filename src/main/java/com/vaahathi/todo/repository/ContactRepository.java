@@ -10,5 +10,5 @@ import java.util.List;
 import java.util.UUID;
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, UUID> {
-    List<Contact> findByOwnerIdAndCategoryAndPersonName(UUID ownerId, String Category, String personName);
+    List<Contact> findByOwnerIdAndCategory(UUID ownerId, String Category);
 }
