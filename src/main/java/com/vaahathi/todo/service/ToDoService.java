@@ -38,7 +38,7 @@ public class ToDoService {
             taskRelation.setId(savedToDo.getId());
             taskRelation.setPid(toDoRequest.getPid());
             taskRelation.setCid(new ArrayList<UUID>());
-            taskRelation.setRef("payment");
+            taskRelation.setRef("todo");
             taskRelationRepository.save(taskRelation);
             // updating parent record in task relation table.
             if (taskRelationRepository.existsById(toDoRequest.getPid())){
