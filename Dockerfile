@@ -5,8 +5,8 @@ WORKDIR /app
 # Copy the Gradle wrapper and build scripts to the container
 COPY gradle /app/gradle
 COPY gradlew /app/
-COPY build.gradle /app/
-COPY settings.gradle /app/
+COPY build.gradle.kts /app/
+COPY settings.gradle.kts /app/
 
 # Download dependencies (this step is separated to optimize caching)
 RUN ./gradlew build --no-daemon || return 0
