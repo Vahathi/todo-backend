@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.UUID;
 
-public interface CrossRefRepository extends JpaRepository<CrossRef, String> {
+public interface CrossRefRepository extends JpaRepository<CrossRef, UUID> {
     List<CrossRef> findBygearKey(String gearKey);
 }
