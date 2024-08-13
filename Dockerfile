@@ -7,6 +7,7 @@ COPY gradle /app/gradle
 COPY gradlew /app/
 COPY build.gradle.kts /app/
 COPY settings.gradle.kts /app/
+RUN chmod +x gradlew
 
 # Download dependencies (this step is separated to optimize caching)
 RUN ./gradlew build --no-daemon || return 0
