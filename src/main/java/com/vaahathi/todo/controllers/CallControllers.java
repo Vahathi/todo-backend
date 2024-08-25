@@ -7,6 +7,7 @@ import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.call.CallRequest;
 import com.vaahathi.todo.models.call.CallResponse;
 import com.vaahathi.todo.repository.CallRepository;
+import com.vaahathi.todo.service.CallService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,6 +30,8 @@ public class CallControllers {
         @Autowired
         private CallRepository callRepository;
         @Autowired
+        private CallService callService;
+        @Autowired
         private ModelMapper modelMapper;
         @Operation(
                 summary =  "create a new call",
@@ -42,12 +45,16 @@ public class CallControllers {
 
 
         @PostMapping ("/create")
-        public ResponseEntity <CallResponse> createCall(@RequestBody CallRequest callRequest) {
-            Call call = modelMapper.map(callRequest, Call.class);
-            Call savedCall = callRepository.save(call);
-            CallResponse callResponse = modelMapper.map(savedCall, CallResponse.class);
+        public ResponseEntity<CallResponse> createCall(@RequestBody CallRequest callRequest) throws Exception {
+            CallResponse callResponse = callService.CreateCallAndUpdateTaskRel(callRequest);
             return ResponseEntity.ok(callResponse);
         }
+//        public ResponseEntity <CallResponse> createCall(@RequestBody CallRequest callRequest) {
+//            Call call = modelMapper.map(callRequest, Call.class);
+//            Call savedCall = callRepository.save(call);
+//            CallResponse callResponse = modelMapper.map(savedCall, CallResponse.class);
+//            return ResponseEntity.ok(callResponse);
+//        }
     @GetMapping("/list")
     public ResponseEntity<List<CallResponse> >getCallList(
             @RequestParam("ownerId") UUID ownerId,

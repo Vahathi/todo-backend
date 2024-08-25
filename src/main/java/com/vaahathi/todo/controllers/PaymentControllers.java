@@ -1,10 +1,7 @@
 package com.vaahathi.todo.controllers;
 
-import com.vaahathi.todo.entity.Mail;
 import com.vaahathi.todo.entity.Payment;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
-import com.vaahathi.todo.models.mail.MailRequest;
-import com.vaahathi.todo.models.mail.MailResponse;
 import com.vaahathi.todo.models.payment.PaymentRequest;
 import com.vaahathi.todo.models.payment.PaymentResponse;
 import com.vaahathi.todo.repository.PaymentRepository;
@@ -44,14 +41,18 @@ public class PaymentControllers {
             @ApiResponse(responseCode = "404", description = "Resource not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PostMapping("/process")
-    public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest paymentRequest) {
-        paymentRequest.setPurpose(paymentRequest.getPurpose());
-        paymentRequest.setImportant(!paymentRequest.isImportant());
-        Payment payment = modelMapper.map(paymentRequest, Payment.class);
-        Payment savedPayment = paymentRepository.save(payment);
-        PaymentResponse paymentResponse = modelMapper.map(savedPayment, PaymentResponse.class);
+    public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest paymentRequest) throws Exception {
+        PaymentResponse paymentResponse = paymentService.createPaymentTaskRel(paymentRequest);
         return ResponseEntity.ok(paymentResponse);
     }
+//    public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest paymentRequest) {
+//        paymentRequest.setPurpose(paymentRequest.getPurpose());
+//        paymentRequest.setImportant(!paymentRequest.isImportant());
+//        Payment payment = modelMapper.map(paymentRequest, Payment.class);
+//        Payment savedPayment = paymentRepository.save(payment);
+//        PaymentResponse paymentResponse = modelMapper.map(savedPayment, PaymentResponse.class);
+//        return ResponseEntity.ok(paymentResponse);
+//    }
     @PutMapping("/{id}")
     public ResponseEntity<PaymentResponse> updatePayment(@PathVariable UUID id, @RequestBody PaymentRequest updatedPaymentRequest) {
         Payment existingPayment=  paymentRepository.findById(id).orElseThrow(() ->

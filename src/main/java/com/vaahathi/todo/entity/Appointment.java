@@ -22,7 +22,7 @@ public class Appointment extends BaseEntity{
  private String category;
  private UUID pid;
  private List<UUID> cid;
- private String taskType;
+ private String taskType="appointment";
  private boolean taskScheduled;
  private LocalDateTime scheduledDate;
  private boolean isUrgent;

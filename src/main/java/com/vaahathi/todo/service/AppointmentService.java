@@ -48,8 +48,9 @@ public class AppointmentService {
                 TaskRelation parentRelation =taskRelationRepository.findById(appointmentRequest.getPid()).orElseThrow(()-> new Exception("can't find parent with given pid"));
                 parentRelation.getCid().add(savedAppointment.getId());
                 taskRelationRepository.save(parentRelation);
-            }else{ throw new Exception("cant find parent with pid");}
-
+            }else{
+                throw new Exception("cant find parent with pid");
+                 }
             return modelMapper.map(savedAppointment, AppointmentResponse.class);
         }
     }
