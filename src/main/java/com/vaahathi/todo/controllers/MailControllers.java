@@ -8,9 +8,12 @@ import com.vaahathi.todo.models.appointment.AppointmentRequest;
 import com.vaahathi.todo.models.appointment.AppointmentResponse;
 import com.vaahathi.todo.models.mail.MailRequest;
 import com.vaahathi.todo.models.mail.MailResponse;
+import com.vaahathi.todo.models.payment.PaymentRequest;
+import com.vaahathi.todo.models.payment.PaymentResponse;
 import com.vaahathi.todo.models.todo.ToDoRequest;
 import com.vaahathi.todo.models.todo.ToDoResponse;
 import com.vaahathi.todo.repository.MailRepository;
+import com.vaahathi.todo.service.MailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,6 +35,8 @@ public class MailControllers {
     @Autowired
     private MailRepository mailRepository;
     @Autowired
+    private MailService mailService;
+    @Autowired
     private ModelMapper modelMapper;
 
     @Operation(
@@ -47,28 +52,35 @@ public class MailControllers {
 
 
     @PostMapping("/create")
-    public ResponseEntity<MailResponse> createMail(@RequestBody MailRequest mailRequest) {
-        mailRequest.setPersonName(mailRequest.getPersonName());
-        mailRequest.setPurpose(mailRequest.getPurpose());
-        mailRequest.setImportant(!mailRequest.isImportant());
-        Mail mail = modelMapper.map(mailRequest, Mail.class);
-        Mail savedMail = mailRepository.save(mail);
-        MailResponse mailResponse = modelMapper.map(savedMail, MailResponse.class);
+    public ResponseEntity<MailResponse> createMail(@RequestBody MailRequest mailRequest) throws Exception {
+        MailResponse mailResponse = mailService.CreateMailAndUpdateTaskRel(mailRequest);
         return ResponseEntity.ok(mailResponse);
     }
+
+    //    public ResponseEntity<MailResponse> createMail(@RequestBody MailRequest mailRequest) {
+//        mailRequest.setPersonName(mailRequest.getPersonName());
+//        mailRequest.setPurpose(mailRequest.getPurpose());
+//        mailRequest.setImportant(!mailRequest.isImportant());
+//        Mail mail = modelMapper.map(mailRequest, Mail.class);
+//        Mail savedMail = mailRepository.save(mail);
+//        MailResponse mailResponse = modelMapper.map(savedMail, MailResponse.class);
+//        return ResponseEntity.ok(mailResponse);
+    // }
     @GetMapping("/list")
-    public ResponseEntity<List<MailResponse>>getMails
-                               (@RequestParam("ownerId") UUID ownerId,
-                               @RequestParam("taskType") String taskType,
-                               @RequestParam("category") String category) {
+    public ResponseEntity<List<MailResponse>> getMails
+    (@RequestParam("ownerId") UUID ownerId,
+     @RequestParam("taskType") String taskType,
+     @RequestParam("category") String category) {
         List<Mail> mails = mailRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, taskType, category);
-        Type listType = new TypeToken<List<MailResponse>>() {}.getType();
+        Type listType = new TypeToken<List<MailResponse>>() {
+        }.getType();
         List<MailResponse> mailResponses = modelMapper.map(mails, listType);
         return ResponseEntity.ok(mailResponses);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<MailResponse> updateMail(@PathVariable UUID id, @RequestBody MailRequest updatedMailRequest) {
-        Mail existingMail=  mailRepository.findById(id).orElseThrow(() ->
+        Mail existingMail = mailRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Appointment not found with id: " + id));
         existingMail.setTaskType(updatedMailRequest.getTaskType());
         existingMail.setTaskScheduled(updatedMailRequest.isTaskScheduled());
@@ -86,3 +98,4 @@ public class MailControllers {
         return ResponseEntity.ok(mailResponse);
     }
 }
+

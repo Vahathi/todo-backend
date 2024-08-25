@@ -52,21 +52,21 @@ public class AppointmentControllers {
 
 
 @PostMapping ("/create")
-public ResponseEntity<AppointmentResponse> createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
-    appointmentRequest.setPersonName(appointmentRequest.getPersonName());
-    appointmentRequest.setPurpose(appointmentRequest.getPurpose());
-    appointmentRequest.setImportant(!appointmentRequest.isImportant());
-    Appointment appointment= modelMapper.map(appointmentRequest, Appointment.class);
-    Appointment savedAppointment = appointmentRepository.save(appointment);
-    AppointmentResponse appointmentResponse = modelMapper.map(savedAppointment, AppointmentResponse.class);
+public ResponseEntity<AppointmentResponse>  createAppointment(@RequestBody AppointmentRequest appointmentRequest) throws Exception {
+    AppointmentResponse appointmentResponse = appointmentService.CreateAppointmentAndUpdateTaskRel(appointmentRequest);
     return ResponseEntity.ok(appointmentResponse);
 }
+//public ResponseEntity<AppointmentResponse> createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+//    Appointment appointment= modelMapper.map(appointmentRequest, Appointment.class);
+//    Appointment savedAppointment = appointmentRepository.save(appointment);
+//    AppointmentResponse appointmentResponse = modelMapper.map(savedAppointment, AppointmentResponse.class);
+//    return ResponseEntity.ok(appointmentResponse);
+//}
 @GetMapping ("/List")
 public ResponseEntity <List<AppointmentResponse>> getAppointments(
         @RequestParam("ownerId") UUID ownerId,
-        @RequestParam("taskType") String taskType,
         @RequestParam("category") String category) {
-    List<Appointment> appointments = appointmentRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId , taskType ,category);
+    List<Appointment> appointments = appointmentRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId , "appointment" ,category);
     Type listType = new TypeToken<List<AppointmentResponse>>() {}.getType();
     List<AppointmentResponse> appointmentResponses = modelMapper.map(appointments, listType);
     return ResponseEntity.ok(appointmentResponses);
@@ -75,7 +75,6 @@ public ResponseEntity <List<AppointmentResponse>> getAppointments(
     public ResponseEntity<AppointmentResponse> updateAppointment(@PathVariable UUID id, @RequestBody AppointmentRequest updatedAppointmentRequest) {
         Appointment existingAppointment =  appointmentRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Appointment not found with id: " + id));
-        existingAppointment.setTaskType(updatedAppointmentRequest.getTaskType());
         existingAppointment.setTaskScheduled(updatedAppointmentRequest.isTaskScheduled());
         existingAppointment.setUrgent(updatedAppointmentRequest.isUrgent());
         existingAppointment.setImportant(updatedAppointmentRequest.isImportant());

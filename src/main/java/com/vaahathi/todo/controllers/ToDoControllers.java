@@ -5,6 +5,7 @@ import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.todo.ToDoRequest;
 import com.vaahathi.todo.models.todo.ToDoResponse;
 import com.vaahathi.todo.repository.ToDoRepository;
+import com.vaahathi.todo.service.ToDoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,6 +28,8 @@ public class ToDoControllers {
     @Autowired
     private ToDoRepository toDoRepository;
     @Autowired
+    private ToDoService toDoService;
+    @Autowired
     private ModelMapper modelMapper;
     @Operation(
             summary = "Create a new todo",
@@ -38,16 +41,20 @@ public class ToDoControllers {
             @ApiResponse(responseCode = "404", description = "Resource not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PostMapping("/create")
-    public ResponseEntity <ToDoResponse> createToDo(@RequestBody ToDoRequest toDoRequest) {
-        toDoRequest.setPurpose(toDoRequest.getPurpose());
-        toDoRequest.setAppointmentDate(toDoRequest.getAppointmentDate());
-        toDoRequest.setImportant(toDoRequest.isImportant());
-        ToDo toDo = modelMapper.map(toDoRequest, ToDo.class);
-        // Save the To-Do to the database
-        ToDo savedToDo = toDoRepository.save(toDo);
-        ToDoResponse response = modelMapper.map(savedToDo, ToDoResponse.class);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<ToDoResponse> createToDo(@RequestBody ToDoRequest toDoRequest) throws Exception {
+        ToDoResponse toDoResponse = toDoService.createToDoAndUpdateTaskRel(toDoRequest);
+        return ResponseEntity.ok(toDoResponse);
     }
+//    public ResponseEntity <ToDoResponse> createToDo(@RequestBody ToDoRequest toDoRequest) {
+//        toDoRequest.setPurpose(toDoRequest.getPurpose());
+//        toDoRequest.setAppointmentDate(toDoRequest.getAppointmentDate());
+//        toDoRequest.setImportant(toDoRequest.isImportant());
+//        ToDo toDo = modelMapper.map(toDoRequest, ToDo.class);
+//        // Save the To-Do to the database
+//        ToDo savedToDo = toDoRepository.save(toDo);
+//        ToDoResponse response = modelMapper.map(savedToDo, ToDoResponse.class);
+//        return ResponseEntity.ok(response);
+  //  }
     @GetMapping("/list")
     public ResponseEntity<List<ToDoResponse>>getToDoList(
             @RequestParam("OwnerId") UUID ownerId,

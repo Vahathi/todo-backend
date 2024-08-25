@@ -29,7 +29,7 @@ public class PaymentRequest {
     private int amount;
     private String arrearsOrPenalty;
     private int arrearsOrPenaltyAmount;
-    private String billGeneratedDate;
+    private LocalDateTime billGeneratedDate;
     private int repeatDuration;
     private String repeatDurationType;
     private int paidStatus;
