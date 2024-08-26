@@ -18,7 +18,6 @@ public class EventRequest {
     private UUID pid;
     private String createdBy;
     private String updatedBy;
-    private String taskType;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;

@@ -17,7 +17,6 @@ public class MailRequest {
     private UUID ownerId;
     private UUID pid;
     private int hierarchy;
-    private String taskType;
     private String category;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;

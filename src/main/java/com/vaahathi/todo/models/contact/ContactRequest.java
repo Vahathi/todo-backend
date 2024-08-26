@@ -26,7 +26,6 @@ public class ContactRequest {
     private String personalEMail;
     private String officeEmail;
     private String webpage;
-    private String taskType;
     private String category;
     private String note;
     private boolean taskScheduled;
