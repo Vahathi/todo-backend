@@ -22,7 +22,7 @@ public class BuySell extends BaseEntity {
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
-    private String taskType="BuySell";
+    private String taskType="buysell";
     private String purpose;
     private boolean dependency;
     private String personName;
