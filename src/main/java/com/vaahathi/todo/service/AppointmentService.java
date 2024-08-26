@@ -36,12 +36,14 @@ public class AppointmentService {
         else {
             Appointment appointment = modelMapper.map(appointmentRequest, Appointment.class);
             Appointment savedAppointment = appointmentRepository.save(appointment);
+            // adding a record in task relation table
             TaskRelation taskRelation= new TaskRelation();
             taskRelation.setId(savedAppointment.getId());
             taskRelation.setPid(appointmentRequest.getPid());
             taskRelation.setCid(new ArrayList<UUID>());
             taskRelation.setRef("appointment");
             taskRelationRepository.save(taskRelation);
+            // updating parent record in task relation table.
             if (taskRelationRepository.existsById(appointmentRequest.getPid())){
                 TaskRelation parentRelation =taskRelationRepository.findById(appointmentRequest.getPid()).orElseThrow(()-> new Exception("can't find parent with given pid"));
                 parentRelation.getCid().add(savedAppointment.getId());
