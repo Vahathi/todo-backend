@@ -51,7 +51,7 @@ public class ContactController {
     public ResponseEntity <List<ContactResponse>> getContacts(
             @RequestParam("ownerId")  UUID ownerId,
             @RequestParam("category") String category) {
-        List<Contact> contacts = contactRepository.findByOwnerIdAndCategory(ownerId, category);
+        List<Contact> contacts = contactRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId,"contact",category);
         Type listType = new TypeToken<List<ContactResponse>>() {}.getType();
         List<ContactResponse> contactResponses = modelMapper.map(contacts, listType);
         return ResponseEntity.ok(contactResponses);
@@ -60,18 +60,14 @@ public class ContactController {
     public ResponseEntity<ContactResponse> updateContact(@PathVariable UUID id, @RequestBody ContactRequest updatedContactRequest) {
         Contact existingContact =  contactRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Contact not found with id: " + id));
-        existingContact.setTaskScheduled(updatedContactRequest.isTaskScheduled());
-        existingContact.setUrgent(updatedContactRequest.isUrgent());
-        existingContact.setImportant(updatedContactRequest.isImportant());
-        existingContact.setPurpose(updatedContactRequest.getPurpose());
-        existingContact.setDependency(updatedContactRequest.isDependency());
-        existingContact.setPersonName(updatedContactRequest.getPersonName());
-        existingContact.setPhoneNumber(updatedContactRequest.getPhoneNumber());
-        existingContact.setCid(updatedContactRequest.getCid());
-        existingContact.setPid(updatedContactRequest.getPid());
+        modelMapper.map(updatedContactRequest, existingContact);
+
         Contact updatedContact = contactRepository.save(existingContact);
+
         ContactResponse contactResponse = modelMapper.map(updatedContact, ContactResponse.class);
+
         return ResponseEntity.ok(contactResponse);
     }
-}
+    }
+
 

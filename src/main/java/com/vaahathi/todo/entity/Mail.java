@@ -21,7 +21,7 @@ public class Mail extends BaseEntity {
     private UUID pid;
     private List<UUID> cid;
     private int hierarchy;
-    private String taskType;
+    private String taskType="mail";
     private String category;
     private UUID ownerId;
     private boolean taskScheduled;

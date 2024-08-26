@@ -15,7 +15,6 @@ import java.util.UUID;
 public class CallRequest {
     private UUID ownerId;
     private UUID pid;
-    private List<UUID> cid;
     private String taskType;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;

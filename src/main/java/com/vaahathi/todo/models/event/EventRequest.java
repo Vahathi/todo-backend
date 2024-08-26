@@ -16,7 +16,6 @@ import java.util.UUID;
 public class EventRequest {
     private UUID ownerId;
     private UUID pid;
-    private List<UUID> cid;
     private String createdBy;
     private String updatedBy;
     private String taskType;

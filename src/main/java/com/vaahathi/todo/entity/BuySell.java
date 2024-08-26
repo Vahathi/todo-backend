@@ -16,14 +16,13 @@ public class BuySell extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private UUID pid;
-    private List<UUID> cid;
     private String category;
     private UUID ownerId;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
-    private String taskType;
+    private String taskType="Buy Sell";
     private String purpose;
     private boolean dependency;
     private String personName;

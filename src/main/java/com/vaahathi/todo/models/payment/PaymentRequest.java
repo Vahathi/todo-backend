@@ -15,7 +15,6 @@ import java.util.UUID;
 public class PaymentRequest {
     private UUID ownerId;
     private UUID pid;
-    private List<UUID> cid;
     private String taskType;
     private String category;
     private String hierarchy;

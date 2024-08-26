@@ -19,7 +19,6 @@ import java.util.UUID;
 public class ContactRequest {
     private UUID ownerId;
     private UUID pid;
-    private List<UUID> cid;
     private String personName;
     private String nickName;
     private long phoneNumber;

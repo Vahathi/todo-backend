@@ -98,19 +98,14 @@ public class EventControllers {
     public ResponseEntity <EventResponse> updateEvent(@PathVariable UUID id, @RequestBody EventRequest updatedEventRequest) {
         Event existingEvent = (Event) eventRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Event not found with id: " + id));
-        existingEvent.setPurpose(updatedEventRequest.getPurpose());
-        existingEvent.setImportant(updatedEventRequest.isImportant());
-        existingEvent.setTaskType(updatedEventRequest.getTaskType());
-        existingEvent.setTaskScheduled(updatedEventRequest.isTaskScheduled());
-        existingEvent.setCategory(updatedEventRequest.getCategory());
-        existingEvent.setUrgent(updatedEventRequest.isUrgent());
-        existingEvent.setDependency(updatedEventRequest.isDependency());
-        Event savedEvent = eventRepository.save(existingEvent);
-        EventResponse response = modelMapper.map(savedEvent, EventResponse.class);
-        return ResponseEntity.ok(response);
+        modelMapper.map(updatedEventRequest, existingEvent);
+        Event updatedEvent = eventRepository.save(existingEvent);
+        EventResponse eventResponse = modelMapper.map(updatedEvent, EventResponse.class);
+        return ResponseEntity.ok(eventResponse);
+    }
     }
 
-}
+
 
 
 

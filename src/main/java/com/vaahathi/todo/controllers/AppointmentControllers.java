@@ -75,19 +75,10 @@ public ResponseEntity <List<AppointmentResponse>> getAppointments(
     public ResponseEntity<AppointmentResponse> updateAppointment(@PathVariable UUID id, @RequestBody AppointmentRequest updatedAppointmentRequest) {
         Appointment existingAppointment =  appointmentRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Appointment not found with id: " + id));
-        existingAppointment.setTaskScheduled(updatedAppointmentRequest.isTaskScheduled());
-        existingAppointment.setUrgent(updatedAppointmentRequest.isUrgent());
-        existingAppointment.setImportant(updatedAppointmentRequest.isImportant());
-        existingAppointment.setPurpose(updatedAppointmentRequest.getPurpose());
-        existingAppointment.setDependency(updatedAppointmentRequest.isDependency());
-        existingAppointment.setPersonName(updatedAppointmentRequest.getPersonName());
-        existingAppointment.setPhoneNumber(updatedAppointmentRequest.getPhoneNumber());
-        existingAppointment.setCid(updatedAppointmentRequest.getCid());
-        existingAppointment.setPid(updatedAppointmentRequest.getPid());
-      //  modelMapper.map(updatedAppointmentRequest, existingAppointment);
-
+        modelMapper.map(updatedAppointmentRequest, existingAppointment);
         Appointment updatedAppointment = appointmentRepository.save(existingAppointment);
         AppointmentResponse appointmentResponse = modelMapper.map(updatedAppointment, AppointmentResponse.class);
         return ResponseEntity.ok(appointmentResponse);
     }
 }
+
