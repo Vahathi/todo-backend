@@ -58,9 +58,8 @@ public class ToDoControllers {
     @GetMapping("/list")
     public ResponseEntity<List<ToDoResponse>>getToDoList(
             @RequestParam("OwnerId") UUID ownerId,
-            @RequestParam("taskType") String taskType,
             @RequestParam("category") String category) {
-        List<ToDo> todos = toDoRepository.findByOwnerIdAndTaskTypeAndCategory( ownerId, taskType, category);
+        List<ToDo> todos = toDoRepository.findByOwnerIdAndTaskTypeAndCategory( ownerId, "todo", category);
         Type listType = new TypeToken<List<ToDoResponse>>() {}.getType();
         List<ToDoResponse> todoResponses = modelMapper.map(todos, listType);
         return ResponseEntity.ok(todoResponses);
@@ -69,18 +68,13 @@ public class ToDoControllers {
     public ResponseEntity <ToDoResponse> updateToDo(@PathVariable UUID id, @RequestBody ToDoRequest updatedToDoRequest) {
         ToDo existingToDo = (ToDo) toDoRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("TODO not found with id: " + id));
-        existingToDo.setPurpose(updatedToDoRequest.getPurpose());
-        existingToDo.setImportant(updatedToDoRequest.isImportant());
-        existingToDo.setTaskType(updatedToDoRequest.getTaskType());
-        existingToDo.setTaskScheduled(updatedToDoRequest.isTaskScheduled());
-        existingToDo.setCategory(updatedToDoRequest.getCategory());
-        existingToDo.setUrgent(updatedToDoRequest.isUrgent());
-        existingToDo.setDependency(updatedToDoRequest.isDependency());
-        existingToDo.setPhoneNumber(updatedToDoRequest.getPhoneNumber());
-        existingToDo.setToDoHistory(updatedToDoRequest.getToDoHistory());
-        existingToDo.setNote(updatedToDoRequest.getNote());
-        ToDo savedToDo = toDoRepository.save(existingToDo);
-        ToDoResponse response = modelMapper.map(savedToDo, ToDoResponse.class);
-        return ResponseEntity.ok(response);
+        modelMapper.map(updatedToDoRequest, existingToDo);
+
+        ToDo updatedToDo = toDoRepository.save(existingToDo);
+
+        ToDoResponse toDoResponse = modelMapper.map(updatedToDo, ToDoResponse.class);
+
+        return ResponseEntity.ok(toDoResponse);
     }
-}
+    }
+

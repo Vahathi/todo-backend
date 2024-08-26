@@ -17,7 +17,7 @@ public class Event extends BaseEntity {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String taskType;
+    private String taskType="event";
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;

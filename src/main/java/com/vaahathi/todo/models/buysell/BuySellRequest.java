@@ -15,8 +15,6 @@ import java.util.UUID;
 public class BuySellRequest {
     private UUID ownerId;
     private UUID pid;
-    private List<UUID> cid;
-    private String taskType;
     private String category;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;

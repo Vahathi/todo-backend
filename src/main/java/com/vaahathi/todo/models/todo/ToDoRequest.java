@@ -16,8 +16,6 @@ import java.util.UUID;
 public class ToDoRequest {
     private UUID ownerId;
     private UUID pid;
-    private List<UUID> cid;
-    private String taskType;
     private boolean TaskScheduled;
     private LocalDateTime appointmentDate;
     private String category;

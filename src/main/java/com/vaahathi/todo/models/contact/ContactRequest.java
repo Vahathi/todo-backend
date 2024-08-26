@@ -19,7 +19,6 @@ import java.util.UUID;
 public class ContactRequest {
     private UUID ownerId;
     private UUID pid;
-    private List<UUID> cid;
     private String personName;
     private String nickName;
     private long phoneNumber;
@@ -27,7 +26,6 @@ public class ContactRequest {
     private String personalEMail;
     private String officeEmail;
     private String webpage;
-    private String taskType;
     private String category;
     private String note;
     private boolean taskScheduled;

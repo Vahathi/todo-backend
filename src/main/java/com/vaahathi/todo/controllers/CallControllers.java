@@ -58,9 +58,8 @@ public class CallControllers {
     @GetMapping("/list")
     public ResponseEntity<List<CallResponse> >getCallList(
             @RequestParam("ownerId") UUID ownerId,
-            @RequestParam("taskType") String taskType,
             @RequestParam("category") String category) {
-        List<Call> calls = callRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, taskType, category);
+        List<Call> calls = callRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "call", category);
         Type listType = new TypeToken<List<CallResponse>>() {}.getType();
         List<CallResponse> callResponses = modelMapper.map(calls, listType);
         return ResponseEntity.ok(callResponses);
@@ -69,21 +68,13 @@ public class CallControllers {
     public ResponseEntity<CallResponse> updateCall(@PathVariable UUID id, @RequestBody CallRequest updatedCallRequest
     ) {
         Call existingCall = callRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Call not found with "+id));
-        existingCall.setTaskScheduled(updatedCallRequest.isTaskScheduled());
-        existingCall.setUrgent(updatedCallRequest.isUrgent());
-        existingCall.setImportant(updatedCallRequest.isImportant());
-        existingCall.setPurpose(updatedCallRequest.getPurpose());
-        existingCall.setDependency(updatedCallRequest.isDependency());
-        existingCall.setAssignedTo(updatedCallRequest.getAssignedTo());
-        existingCall.setPersonName(updatedCallRequest.getPersonName());
-        existingCall.setPhoneNumber(updatedCallRequest.getPhoneNumber());
-        existingCall.setCallNote(updatedCallRequest.getCallNote());
         modelMapper.map(updatedCallRequest, existingCall);
         Call updatedCall = callRepository.save(existingCall);
         CallResponse callResponse = modelMapper.map(updatedCall, CallResponse.class);
         return ResponseEntity.ok(callResponse);
     }
 }
+
 
 
 

@@ -18,7 +18,7 @@ public class Payment extends BaseEntity {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String taskType;
+    private String taskType="payment";
     private String category;
     private UUID ownerId;
     private String hierarchy;

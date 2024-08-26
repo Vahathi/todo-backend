@@ -56,29 +56,19 @@ public class PaymentControllers {
     @PutMapping("/{id}")
     public ResponseEntity<PaymentResponse> updatePayment(@PathVariable UUID id, @RequestBody PaymentRequest updatedPaymentRequest) {
         Payment existingPayment=  paymentRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Appointment not found with id: " + id));
-        existingPayment.setTaskType(updatedPaymentRequest.getTaskType());
-        existingPayment.setTaskScheduled(updatedPaymentRequest.isTaskScheduled());
-        existingPayment.setUrgent(updatedPaymentRequest.isUrgent());
-        existingPayment.setImportant(updatedPaymentRequest.isImportant());
-        existingPayment.setPurpose(updatedPaymentRequest.getPurpose());
-        existingPayment.setDependency(updatedPaymentRequest.isDependency());
-        existingPayment.setCid(updatedPaymentRequest.getCid());
-        existingPayment.setPid(updatedPaymentRequest.getPid());
-        existingPayment.setMessage(updatedPaymentRequest.getMessage());
-        //  modelMapper.map(updatedMailRequest, existingMail);
-
+                new ResourceNotFoundException("Payment not found with id: " + id));
+        modelMapper.map(updatedPaymentRequest, existingPayment);
         Payment updatedPayment = paymentRepository.save(existingPayment);
         PaymentResponse paymentResponse = modelMapper.map(updatedPayment, PaymentResponse.class);
         return ResponseEntity.ok(paymentResponse);
     }
 
+
     @GetMapping("/List")
     public ResponseEntity<List<PaymentResponse>>getPayments
             (@RequestParam("ownerId") UUID ownerId,
-             @RequestParam("taskType") String taskType,
              @RequestParam("category") String category) {
-        List<Payment> payments = paymentRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, taskType, category);
+        List<Payment> payments = paymentRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId,"payment", category);
         Type listType = new TypeToken<List<PaymentResponse>>() {}.getType();
         List<PaymentResponse> paymentResponses = modelMapper.map(payments, listType);
         return ResponseEntity.ok(paymentResponses);

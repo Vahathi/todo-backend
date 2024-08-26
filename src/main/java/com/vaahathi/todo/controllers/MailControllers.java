@@ -69,9 +69,8 @@ public class MailControllers {
     @GetMapping("/list")
     public ResponseEntity<List<MailResponse>> getMails
     (@RequestParam("ownerId") UUID ownerId,
-     @RequestParam("taskType") String taskType,
      @RequestParam("category") String category) {
-        List<Mail> mails = mailRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, taskType, category);
+        List<Mail> mails = mailRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "mail", category);
         Type listType = new TypeToken<List<MailResponse>>() {
         }.getType();
         List<MailResponse> mailResponses = modelMapper.map(mails, listType);
@@ -81,21 +80,11 @@ public class MailControllers {
     @PutMapping("/{id}")
     public ResponseEntity<MailResponse> updateMail(@PathVariable UUID id, @RequestBody MailRequest updatedMailRequest) {
         Mail existingMail = mailRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Appointment not found with id: " + id));
-        existingMail.setTaskType(updatedMailRequest.getTaskType());
-        existingMail.setTaskScheduled(updatedMailRequest.isTaskScheduled());
-        existingMail.setUrgent(updatedMailRequest.isUrgent());
-        existingMail.setImportant(updatedMailRequest.isImportant());
-        existingMail.setPurpose(updatedMailRequest.getPurpose());
-        existingMail.setDependency(updatedMailRequest.isDependency());
-        existingMail.setPersonName(updatedMailRequest.getPersonName());
-        existingMail.setCid(updatedMailRequest.getCid());
-        existingMail.setPid(updatedMailRequest.getPid());
-        //  modelMapper.map(updatedMailRequest, existingMail);
-
+                new ResourceNotFoundException("mail not found with id: " + id));
+        modelMapper.map(updatedMailRequest, existingMail);
         Mail updatedMail = mailRepository.save(existingMail);
-        MailResponse mailResponse = modelMapper.map(updatedMail, MailResponse.class);
-        return ResponseEntity.ok(mailResponse);
+        MailResponse callResponse = modelMapper.map(updatedMail, MailResponse.class);
+        return ResponseEntity.ok(callResponse);
     }
 }
 
