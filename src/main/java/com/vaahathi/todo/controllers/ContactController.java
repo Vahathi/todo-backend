@@ -8,6 +8,7 @@ import com.vaahathi.todo.models.call.CallResponse;
 import com.vaahathi.todo.models.contact.ContactRequest;
 import com.vaahathi.todo.models.contact.ContactResponse;
 import com.vaahathi.todo.repository.ContactRepository;
+import com.vaahathi.todo.service.ContactService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,12 +23,15 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/contacts")
 public class ContactController {
     @Autowired
     ContactRepository contactRepository;
+    @Autowired
+    private ContactService contactService;
     @Autowired
     private ModelMapper modelMapper;
     @Operation(
@@ -49,9 +53,11 @@ public class ContactController {
     }
     @GetMapping("/List")
     public ResponseEntity <List<ContactResponse>> getContacts(
-            @RequestParam("ownerId")  UUID ownerId,
-            @RequestParam("category") String category) {
-        List<Contact> contacts = contactRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId,"contact",category);
+
+            @RequestParam("ownerId")  UUID ownerId)
+             {
+        List<Contact> contacts = contactRepository.findByOwnerIdAndTaskType(ownerId,"contact");
+
         Type listType = new TypeToken<List<ContactResponse>>() {}.getType();
         List<ContactResponse> contactResponses = modelMapper.map(contacts, listType);
         return ResponseEntity.ok(contactResponses);
@@ -61,13 +67,29 @@ public class ContactController {
         Contact existingContact =  contactRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Contact not found with id: " + id));
         modelMapper.map(updatedContactRequest, existingContact);
-
         Contact updatedContact = contactRepository.save(existingContact);
 
         ContactResponse contactResponse = modelMapper.map(updatedContact, ContactResponse.class);
 
         return ResponseEntity.ok(contactResponse);
     }
-    }
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ContactResponse> getContactById(@PathVariable UUID id) {
+//        Contact contact = contactRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Contact not found with id: " + id));
+//        ContactResponse contactResponse = modelMapper.map(contact, ContactResponse.class);
+//        return ResponseEntity.ok(contactResponse);
+//    }
+@GetMapping("/search")
+public List<ContactResponse> searchContact(@RequestParam String personName) {
+    List<Contact> contacts = contactService.searchContactsByName(personName);
+    return contacts.stream()
+            .map(contact -> modelMapper.map(contact, ContactResponse.class))
+            .collect(Collectors.toList());
+}
+}
+
+
 
 
