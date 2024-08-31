@@ -17,8 +17,6 @@ public class Contact extends BaseEntity {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
    private UUID id;
-   private UUID pid;
-   private List<UUID> cid;
    private String personName;
    private String nickName;
    private long phoneNumber;
@@ -29,11 +27,5 @@ public class Contact extends BaseEntity {
    private String taskType="contact";
    private String category;
    private UUID ownerId;
-   private String note;
-   private boolean taskScheduled;
-   private LocalDateTime scheduledDate;
-   private boolean isUrgent;
-   private boolean isImportant;
-   private String purpose;
-   private boolean dependency;
+
 }
