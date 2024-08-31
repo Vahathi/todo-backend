@@ -53,9 +53,11 @@ public class ContactController {
     }
     @GetMapping("/List")
     public ResponseEntity <List<ContactResponse>> getContacts(
+
             @RequestParam("ownerId")  UUID ownerId)
              {
         List<Contact> contacts = contactRepository.findByOwnerIdAndTaskType(ownerId,"contact");
+
         Type listType = new TypeToken<List<ContactResponse>>() {}.getType();
         List<ContactResponse> contactResponses = modelMapper.map(contacts, listType);
         return ResponseEntity.ok(contactResponses);
@@ -66,9 +68,12 @@ public class ContactController {
                 new ResourceNotFoundException("Contact not found with id: " + id));
         modelMapper.map(updatedContactRequest, existingContact);
         Contact updatedContact = contactRepository.save(existingContact);
+
         ContactResponse contactResponse = modelMapper.map(updatedContact, ContactResponse.class);
+
         return ResponseEntity.ok(contactResponse);
     }
+
 //    @GetMapping("/{id}")
 //    public ResponseEntity<ContactResponse> getContactById(@PathVariable UUID id) {
 //        Contact contact = contactRepository.findById(id)
@@ -83,7 +88,8 @@ public List<ContactResponse> searchContact(@RequestParam String personName) {
             .map(contact -> modelMapper.map(contact, ContactResponse.class))
             .collect(Collectors.toList());
 }
-    }
+}
+
 
 
 
