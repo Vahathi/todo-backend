@@ -15,6 +15,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ContactResponse {
     private UUID id;
+    private UUID pid;
+    private List<UUID> cid;
     private String personName;
     private String nickName;
     private long phoneNumber;
@@ -22,7 +24,14 @@ public class ContactResponse {
     private String personalEMail;
     private String officeEmail;
     private String webpage;
+    private String taskType;
+    private String category;
     private UUID ownerId;
     private String note;
-
+    private boolean taskScheduled;
+    private LocalDateTime scheduledDate;
+    private boolean isUrgent;
+    private boolean isImportant;
+    private String purpose;
+    private boolean dependency;
 }
