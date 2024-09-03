@@ -1,8 +1,6 @@
 package com.vaahathi.todo.controllers;
 
-import com.vaahathi.todo.entity.Appointment;
 import com.vaahathi.todo.entity.Call;
-import com.vaahathi.todo.entity.ToDo;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.call.CallRequest;
 import com.vaahathi.todo.models.call.CallResponse;
@@ -27,47 +25,51 @@ import java.util.UUID;
 @RequestMapping("/api/calls")
 public class CallControllers {
 
-        @Autowired
-        private CallRepository callRepository;
-        @Autowired
-        private CallService callService;
-        @Autowired
-        private ModelMapper modelMapper;
-        @Operation(
-                summary =  "create a new call",
-                description = "Id will be automatically generated in UUID format."
-        )
-        @ApiResponses(value = {
-                @ApiResponse(responseCode = "200", description = "Call created successfully",
-                        content = @Content(schema = @Schema(implementation = Call.class))),
-                @ApiResponse(responseCode = "404", description = "Resource not found"),
-                @ApiResponse(responseCode = "500", description = "Internal server error")})
+    @Autowired
+    private CallRepository callRepository;
+    @Autowired
+    private CallService callService;
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Operation(
+            summary = "create a new call",
+            description = "Id will be automatically generated in UUID format."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Call created successfully",
+                    content = @Content(schema = @Schema(implementation = Call.class))),
+            @ApiResponse(responseCode = "404", description = "Resource not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")})
 
 
-        @PostMapping ("/create")
-        public ResponseEntity<CallResponse> createCall(@RequestBody CallRequest callRequest) throws Exception {
-            CallResponse callResponse = callService.CreateCallAndUpdateTaskRel(callRequest);
-            return ResponseEntity.ok(callResponse);
-        }
-//        public ResponseEntity <CallResponse> createCall(@RequestBody CallRequest callRequest) {
+    @PostMapping("/create")
+    public ResponseEntity<CallResponse> createCall(@RequestBody CallRequest callRequest) throws Exception {
+        CallResponse callResponse = callService.CreateCallAndUpdateTaskRel(callRequest);
+        return ResponseEntity.ok(callResponse);
+    }
+
+    //        public ResponseEntity <CallResponse> createCall(@RequestBody CallRequest callRequest) {
 //            Call call = modelMapper.map(callRequest, Call.class);
 //            Call savedCall = callRepository.save(call);
 //            CallResponse callResponse = modelMapper.map(savedCall, CallResponse.class);
 //            return ResponseEntity.ok(callResponse);
 //        }
     @GetMapping("/list")
-    public ResponseEntity<List<CallResponse> >getCallList(
+    public ResponseEntity<List<CallResponse>> getCallList(
             @RequestParam("ownerId") UUID ownerId,
             @RequestParam("category") String category) {
         List<Call> calls = callRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "call", category);
-        Type listType = new TypeToken<List<CallResponse>>() {}.getType();
+        Type listType = new TypeToken<List<CallResponse>>() {
+        }.getType();
         List<CallResponse> callResponses = modelMapper.map(calls, listType);
         return ResponseEntity.ok(callResponses);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<CallResponse> updateCall(@PathVariable UUID id, @RequestBody CallRequest updatedCallRequest
     ) {
-        Call existingCall = callRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Call not found with "+id));
+        Call existingCall = callRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Call not found with " + id));
         modelMapper.map(updatedCallRequest, existingCall);
         Call updatedCall = callRepository.save(existingCall);
         CallResponse callResponse = modelMapper.map(updatedCall, CallResponse.class);
