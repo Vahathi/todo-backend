@@ -1,5 +1,4 @@
 package com.vaahathi.todo.repository;
-
 import com.vaahathi.todo.entity.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, UUID> {
+
     List<Contact> findByOwnerIdAndTaskTypeAndCategory(UUID ownerId, String taskType, String Category);
 
     @Query("SELECT c FROM Contact c WHERE c.ownerId = :ownerId AND c.personName LIKE %:search% ORDER BY c.personName ASC")
