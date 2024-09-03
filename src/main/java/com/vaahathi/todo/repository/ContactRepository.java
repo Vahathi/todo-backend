@@ -17,3 +17,4 @@ public interface ContactRepository extends JpaRepository<Contact, UUID> {
     @Query("SELECT c FROM Contact c WHERE c.ownerId = :ownerId AND c.personName LIKE %:search%")
     List<Contact> searchByOwnerIDAndName(UUID ownerId, String search);
 }
+
