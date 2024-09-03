@@ -7,6 +7,7 @@ import com.vaahathi.todo.models.call.CallRequest;
 import com.vaahathi.todo.models.call.CallResponse;
 import com.vaahathi.todo.models.contact.ContactRequest;
 import com.vaahathi.todo.models.contact.ContactResponse;
+import com.vaahathi.todo.models.contact.SearchResponse;
 import com.vaahathi.todo.repository.ContactRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,12 +17,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/contacts")
@@ -68,6 +71,13 @@ public class ContactController {
 
         return ResponseEntity.ok(contactResponse);
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<SearchResponse>> searchContact(@RequestParam String search,@RequestParam UUID ownerId) {
+        List<Contact> existingContact =  contactRepository.searchByOwnerIDAndName(ownerId,search);
+        List<SearchResponse> destinationList = existingContact.stream()
+                .map(source -> modelMapper.map(source, SearchResponse.class))
+                .toList();
+
+        return ResponseEntity.ok(destinationList);
     }
-
-
+    }
