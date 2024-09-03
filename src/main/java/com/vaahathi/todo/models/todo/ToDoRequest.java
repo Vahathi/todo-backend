@@ -26,4 +26,5 @@ public class ToDoRequest {
     private long phoneNumber;
     private String toDoHistory;
     private String note;
+    private List<String> parentHierarcy;
 }

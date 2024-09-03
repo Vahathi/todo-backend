@@ -5,12 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 @Entity
 @Data
 public class Call extends BaseEntity {
@@ -19,7 +18,7 @@ public class Call extends BaseEntity {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String taskType="call";
+    private String taskType = "call";
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
@@ -33,4 +32,5 @@ public class Call extends BaseEntity {
     private String personName;
     private long phoneNumber;
     private String callNote;
+    private List<String> hierarchy;
 }

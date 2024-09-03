@@ -18,17 +18,16 @@ public class Payment extends BaseEntity {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String taskType="payment";
+    private String taskType = "payment";
     private String category;
     private UUID ownerId;
-    private String hierarchy;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
     private boolean dependency;
-    private String  paymentPurpose;
+    private String paymentPurpose;
     private int amount;
     private String arrearsOrPenalty;
     private int arrearsOrPenaltyAmount;
@@ -39,4 +38,5 @@ public class Payment extends BaseEntity {
     private String paidOn;
     private String paymentHistory;
     private String message;
+    private List<String> hierarchy;
 }

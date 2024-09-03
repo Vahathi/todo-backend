@@ -5,12 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 @Entity
 @Data
 public class ToDo extends BaseEntity {
@@ -19,7 +18,7 @@ public class ToDo extends BaseEntity {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String taskType="todo";
+    private String taskType = "todo";
     private boolean TaskScheduled;
     private LocalDateTime appointmentDate;
     private String category;
@@ -31,4 +30,5 @@ public class ToDo extends BaseEntity {
     private long phoneNumber;
     private String toDoHistory;
     private String note;
+    private List<String> hierarchy;
 }

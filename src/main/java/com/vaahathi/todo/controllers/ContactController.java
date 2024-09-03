@@ -1,4 +1,5 @@
 package com.vaahathi.todo.controllers;
+
 import com.vaahathi.todo.entity.Contact;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.contact.ContactRequest;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/contacts")
@@ -28,6 +28,7 @@ public class ContactController {
     ContactRepository contactRepository;
     @Autowired
     private ModelMapper modelMapper;
+
     @Operation(
             summary = "Create a new Contact",
             description = "Id will be automatically generated in UUID format."
@@ -39,24 +40,27 @@ public class ContactController {
             @ApiResponse(responseCode = "500", description = "Internal server error")})
 
     @PostMapping("/create")
-    public ResponseEntity <ContactResponse> createContact(@RequestBody ContactRequest contactRequest) {
+    public ResponseEntity<ContactResponse> createContact(@RequestBody ContactRequest contactRequest) {
         Contact contact = modelMapper.map(contactRequest, Contact.class);
-        Contact savedContact= contactRepository.save(contact);
+        Contact savedContact = contactRepository.save(contact);
         ContactResponse contactResponse = modelMapper.map(savedContact, ContactResponse.class);
         return ResponseEntity.ok(contactResponse);
     }
+
     @GetMapping("/List")
-    public ResponseEntity <List<ContactResponse>> getContacts(
-            @RequestParam("ownerId")  UUID ownerId,
+    public ResponseEntity<List<ContactResponse>> getContacts(
+            @RequestParam("ownerId") UUID ownerId,
             @RequestParam("category") String category) {
-        List<Contact> contacts = contactRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId,"contact",category);
-        Type listType = new TypeToken<List<ContactResponse>>() {}.getType();
+        List<Contact> contacts = contactRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "contact", category);
+        Type listType = new TypeToken<List<ContactResponse>>() {
+        }.getType();
         List<ContactResponse> contactResponses = modelMapper.map(contacts, listType);
         return ResponseEntity.ok(contactResponses);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<ContactResponse> updateContact(@PathVariable UUID id, @RequestBody ContactRequest updatedContactRequest) {
-        Contact existingContact =  contactRepository.findById(id).orElseThrow(() ->
+        Contact existingContact = contactRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Contact not found with id: " + id));
         modelMapper.map(updatedContactRequest, existingContact);
 
@@ -66,14 +70,15 @@ public class ContactController {
 
         return ResponseEntity.ok(contactResponse);
     }
+
     @GetMapping("/search")
-    public ResponseEntity<List<SearchResponse>> searchContact(@RequestParam String search,@RequestParam UUID ownerId) {
-        List<Contact> existingContact =  contactRepository.searchByOwnerIDAndName(ownerId,search);
+    public ResponseEntity<List<SearchResponse>> searchContact(@RequestParam String search, @RequestParam UUID ownerId) {
+        List<Contact> existingContact = contactRepository.searchByOwnerIDAndName(ownerId, search);
         List<SearchResponse> destinationList = existingContact.stream()
                 .map(source -> modelMapper.map(source, SearchResponse.class))
                 .toList();
 
         return ResponseEntity.ok(destinationList);
     }
-    }
+}
 

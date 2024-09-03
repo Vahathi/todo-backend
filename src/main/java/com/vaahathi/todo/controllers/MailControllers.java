@@ -1,17 +1,9 @@
 package com.vaahathi.todo.controllers;
 
-import com.vaahathi.todo.entity.Appointment;
 import com.vaahathi.todo.entity.Mail;
-import com.vaahathi.todo.entity.ToDo;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
-import com.vaahathi.todo.models.appointment.AppointmentRequest;
-import com.vaahathi.todo.models.appointment.AppointmentResponse;
 import com.vaahathi.todo.models.mail.MailRequest;
 import com.vaahathi.todo.models.mail.MailResponse;
-import com.vaahathi.todo.models.payment.PaymentRequest;
-import com.vaahathi.todo.models.payment.PaymentResponse;
-import com.vaahathi.todo.models.todo.ToDoRequest;
-import com.vaahathi.todo.models.todo.ToDoResponse;
 import com.vaahathi.todo.repository.MailRepository;
 import com.vaahathi.todo.service.MailService;
 import io.swagger.v3.oas.annotations.Operation;

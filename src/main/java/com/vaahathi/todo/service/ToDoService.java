@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,25 +28,29 @@ public class ToDoService {
 
     @Transactional
     public ToDoResponse createToDoAndUpdateTaskRel(ToDoRequest toDoRequest) throws Exception {
-        if(toDoRequest.getPid() == null){
+        if (toDoRequest.getPid() == null) {
             throw new Exception("PID cannot be empty");
-        }
-        else {
-            ToDo toDo= modelMapper.map(toDoRequest, ToDo.class);
+        } else {
+            ToDo toDo = modelMapper.map(toDoRequest, ToDo.class);
+            List<String> tempHierarcy = toDoRequest.getParentHierarcy();
+            tempHierarcy.add(toDo.getPurpose());
+            toDo.setHierarchy(tempHierarcy);
             ToDo savedToDo = toDoRepository.save(toDo);
             // adding a record in task relation table
-            TaskRelation taskRelation= new TaskRelation();
+            TaskRelation taskRelation = new TaskRelation();
             taskRelation.setId(savedToDo.getId());
             taskRelation.setPid(toDoRequest.getPid());
             taskRelation.setCid(new ArrayList<UUID>());
             taskRelation.setRef("todo");
             taskRelationRepository.save(taskRelation);
             // updating parent record in task relation table.
-            if (taskRelationRepository.existsById(toDoRequest.getPid())){
-                TaskRelation parentRelation =taskRelationRepository.findById(toDoRequest.getPid()).orElseThrow(()-> new Exception("can't find parent with given pid"));
+            if (taskRelationRepository.existsById(toDoRequest.getPid())) {
+                TaskRelation parentRelation = taskRelationRepository.findById(toDoRequest.getPid()).orElseThrow(() -> new Exception("can't find parent with given pid"));
                 parentRelation.getCid().add(savedToDo.getId());
                 taskRelationRepository.save(parentRelation);
-            }else{ throw new Exception("cant find parent with pid");}
+            } else {
+                throw new Exception("cant find parent with pid");
+            }
 
             return modelMapper.map(savedToDo, ToDoResponse.class);
         }
