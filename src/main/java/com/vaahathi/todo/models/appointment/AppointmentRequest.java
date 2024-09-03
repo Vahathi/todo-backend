@@ -25,5 +25,6 @@ public class AppointmentRequest {
     private String personName;
     private long phoneNumber;
     private String category;
+    private List<String> parentHierarcy;
 
 }

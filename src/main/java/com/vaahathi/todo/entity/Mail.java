@@ -4,14 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 @Entity
 @Data
 public class Mail extends BaseEntity {
@@ -20,8 +18,7 @@ public class Mail extends BaseEntity {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private int hierarchy;
-    private String taskType="mail";
+    private String taskType = "mail";
     private String category;
     private UUID ownerId;
     private boolean taskScheduled;
@@ -30,7 +27,8 @@ public class Mail extends BaseEntity {
     private boolean isImportant;
     private String purpose;
     private boolean dependency;
-    private String  personName;
+    private String personName;
     private String eMailId;
+    private List<String> hierarchy;
 
 }

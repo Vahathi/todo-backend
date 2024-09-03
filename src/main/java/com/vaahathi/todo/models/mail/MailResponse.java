@@ -17,7 +17,6 @@ public class MailResponse {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private int hierarchy;
     private String taskType;
     private String category;
     private UUID ownerId;
@@ -27,6 +26,7 @@ public class MailResponse {
     private boolean isImportant;
     private String purpose;
     private boolean dependency;
-    private String  personName;
+    private String personName;
     private String eMailId;
+    private List<String> hierarchy;
 }

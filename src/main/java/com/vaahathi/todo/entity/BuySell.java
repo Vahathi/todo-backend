@@ -9,6 +9,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 @Entity
 @Data
 public class BuySell extends BaseEntity {
@@ -22,11 +23,12 @@ public class BuySell extends BaseEntity {
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
-    private String taskType= "buysell";
+    private String taskType = "buysell";
     private String purpose;
     private boolean dependency;
     private String personName;
     private long phoneNumber;
     private String callNote;
+    private List<String> hierarchy;
 
 }

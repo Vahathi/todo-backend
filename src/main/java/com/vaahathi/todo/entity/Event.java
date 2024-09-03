@@ -9,6 +9,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 @Entity
 @Data
 public class Event extends BaseEntity {
@@ -17,7 +18,7 @@ public class Event extends BaseEntity {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String taskType="event";
+    private String taskType = "event";
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
@@ -28,6 +29,7 @@ public class Event extends BaseEntity {
     private String category;
     private UUID ownerId;
     private String name;
+    private List<String> hierarchy;
 }
 
 

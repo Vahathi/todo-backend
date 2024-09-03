@@ -24,6 +24,7 @@ public class MailRequest {
     private boolean isImportant;
     private String purpose;
     private boolean dependency;
-    private String  personName;
+    private String personName;
     private String eMailId;
+    private List<String> parentHierarcy;
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 @Component
 @Data
 @AllArgsConstructor
@@ -25,4 +26,5 @@ public class BuySellRequest {
     private String personName;
     private long phoneNumber;
     private String callNote;
+    private List<String> parentHierarcy;
 }

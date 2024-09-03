@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 @Component
 @Data
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class PaymentRequest {
     private boolean isImportant;
     private String purpose;
     private boolean dependency;
-    private String  paymentPurpose;
+    private String paymentPurpose;
     private int amount;
     private String arrearsOrPenalty;
     private int arrearsOrPenaltyAmount;
@@ -34,5 +35,6 @@ public class PaymentRequest {
     private String paidOn;
     private String paymentHistory;
     private String message;
+    private List<String> parentHierarcy;
 
 }
