@@ -1,10 +1,6 @@
 package com.vaahathi.todo.controllers;
-
-import com.vaahathi.todo.entity.Call;
 import com.vaahathi.todo.entity.Contact;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
-import com.vaahathi.todo.models.call.CallRequest;
-import com.vaahathi.todo.models.call.CallResponse;
 import com.vaahathi.todo.models.contact.ContactRequest;
 import com.vaahathi.todo.models.contact.ContactResponse;
 import com.vaahathi.todo.models.contact.SearchResponse;
@@ -17,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
