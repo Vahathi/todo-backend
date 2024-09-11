@@ -1,5 +1,6 @@
 package com.vaahathi.todo.models.appointment;
 
+import com.vaahathi.todo.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,6 @@ public class AppointmentRequest {
     private long phoneNumber;
     private String category;
     private List<String> parentHierarcy;
+    private Status status = Status.INITIATED;
 
 }

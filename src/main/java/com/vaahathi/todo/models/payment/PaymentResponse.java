@@ -1,5 +1,6 @@
 package com.vaahathi.todo.models.payment;
 
+import com.vaahathi.todo.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,4 +39,5 @@ public class PaymentResponse {
     private String paymentHistory;
     private String message;
     private List<String> hierarchy;
+    private Status status;
 }

@@ -1,7 +1,9 @@
 package com.vaahathi.todo.service;
 
+import com.vaahathi.todo.entity.Status;
 import com.vaahathi.todo.entity.TaskRelation;
 import com.vaahathi.todo.entity.ToDo;
+import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.todo.ToDoRequest;
 import com.vaahathi.todo.models.todo.ToDoResponse;
 import com.vaahathi.todo.repository.TaskRelationRepository;
@@ -54,5 +56,11 @@ public class ToDoService {
 
             return modelMapper.map(savedToDo, ToDoResponse.class);
         }
+    }
+
+    public ToDo closeToDo(UUID toDoId) {
+        ToDo toDo = toDoRepository.findById(toDoId).orElseThrow(() -> new ResourceNotFoundException("ToDo not found"));
+        toDo.setStatus(Status.CLOSED);
+        return toDoRepository.save(toDo);
     }
 }

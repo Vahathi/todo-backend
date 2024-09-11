@@ -1,7 +1,9 @@
 package com.vaahathi.todo.service;
 
 import com.vaahathi.todo.entity.Event;
+import com.vaahathi.todo.entity.Status;
 import com.vaahathi.todo.entity.TaskRelation;
+import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.event.EventRequest;
 import com.vaahathi.todo.models.event.EventResponse;
 import com.vaahathi.todo.repository.EventRepository;
@@ -71,5 +73,11 @@ public class EventService {
             EventResponse eventResponse = modelMapper.map(savedChildEvent, EventResponse.class);
             return ResponseEntity.ok(eventResponse);
         }
+    }
+
+    public Event closeEvent(UUID eventId) {
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+        event.setStatus(Status.CLOSED);
+        return eventRepository.save(event);
     }
 }

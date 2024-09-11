@@ -1,7 +1,9 @@
 package com.vaahathi.todo.service;
 
 import com.vaahathi.todo.entity.Payment;
+import com.vaahathi.todo.entity.Status;
 import com.vaahathi.todo.entity.TaskRelation;
+import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.payment.PaymentRequest;
 import com.vaahathi.todo.models.payment.PaymentResponse;
 import com.vaahathi.todo.repository.PaymentRepository;
@@ -21,7 +23,7 @@ public class PaymentService {
     TaskRelationRepository taskRelationRepository;
 
     @Autowired
-    PaymentRepository paymentsRepository;
+    PaymentRepository paymentRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -35,7 +37,7 @@ public class PaymentService {
             List<String> tempHierarcy = paymentRequest.getParentHierarcy();
             tempHierarcy.add(payments.getPurpose());
             payments.setHierarchy(tempHierarcy);
-            Payment savedPayment = paymentsRepository.save(payments);
+            Payment savedPayment = paymentRepository.save(payments);
             // adding a record in task relation table
             TaskRelation taskRelation = new TaskRelation();
             taskRelation.setId(savedPayment.getId());
@@ -54,5 +56,11 @@ public class PaymentService {
 
             return modelMapper.map(savedPayment, PaymentResponse.class);
         }
+    }
+
+    public Payment closePayment(UUID paymentId) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new ResourceNotFoundException("Payment not found"));
+        payment.setStatus(Status.CLOSED);
+        return paymentRepository.save(payment);
     }
 }

@@ -1,5 +1,6 @@
 package com.vaahathi.todo.models.mail;
 
+import com.vaahathi.todo.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,4 +30,5 @@ public class MailResponse {
     private String personName;
     private String eMailId;
     private List<String> hierarchy;
+    private Status status;
 }

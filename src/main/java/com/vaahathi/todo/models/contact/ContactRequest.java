@@ -1,11 +1,11 @@
 package com.vaahathi.todo.models.contact;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -14,7 +14,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ContactRequest {
     private UUID ownerId;
-    private UUID pid;
     private String personName;
     private String nickName;
     private long phoneNumber;

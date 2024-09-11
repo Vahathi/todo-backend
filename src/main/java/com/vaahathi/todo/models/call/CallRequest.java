@@ -1,5 +1,6 @@
 package com.vaahathi.todo.models.call;
 
+import com.vaahathi.todo.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,5 +30,6 @@ public class CallRequest {
     private long phoneNumber;
     private String callNote;
     private List<String> parentHierarcy;
+    private Status status = Status.INITIATED;
 
 }
