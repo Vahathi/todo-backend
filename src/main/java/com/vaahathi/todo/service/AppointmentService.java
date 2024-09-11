@@ -2,9 +2,7 @@ package com.vaahathi.todo.service;
 
 
 import com.vaahathi.todo.entity.Appointment;
-import com.vaahathi.todo.entity.Status;
 import com.vaahathi.todo.entity.TaskRelation;
-import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.appointment.AppointmentRequest;
 import com.vaahathi.todo.models.appointment.AppointmentResponse;
 import com.vaahathi.todo.repository.AppointmentRepository;
@@ -57,11 +55,5 @@ public class AppointmentService {
             }
             return modelMapper.map(savedAppointment, AppointmentResponse.class);
         }
-    }
-
-    public Appointment closeAppointment(UUID appointmentId) {
-        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
-        appointment.setStatus(Status.CLOSED);
-        return appointmentRepository.save(appointment);
     }
 }

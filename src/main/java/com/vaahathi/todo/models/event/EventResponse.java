@@ -1,6 +1,5 @@
 package com.vaahathi.todo.models.event;
 
-import com.vaahathi.todo.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,5 +30,4 @@ public class EventResponse {
     private UUID ownerId;
     private String name;
     private List<String> hierarchy;
-    private Status status;
 }

@@ -75,11 +75,6 @@ public class CallControllers {
         CallResponse callResponse = modelMapper.map(updatedCall, CallResponse.class);
         return ResponseEntity.ok(callResponse);
     }
-
-    @GetMapping("/sorted")
-    public List<CallResponse> getCallsSortedByPriority() {
-        return callService.getCallsSortedByPriority();
-    }
 }
 
 

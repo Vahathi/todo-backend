@@ -1,6 +1,9 @@
 package com.vaahathi.todo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -27,9 +30,5 @@ public class BuySell extends BaseEntity {
     private long phoneNumber;
     private String callNote;
     private List<String> hierarchy;
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status = Status.INITIATED;
-    private Integer priority;
 
 }

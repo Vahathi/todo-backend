@@ -1,6 +1,5 @@
 package com.vaahathi.todo.models.event;
 
-import com.vaahathi.todo.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,5 +27,4 @@ public class EventRequest {
     private String category;
     private String name;
     private List<String> parentHierarcy;
-    private Status status = Status.INITIATED;
 }

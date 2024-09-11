@@ -1,9 +1,7 @@
 package com.vaahathi.todo.service;
 
 import com.vaahathi.todo.entity.Mail;
-import com.vaahathi.todo.entity.Status;
 import com.vaahathi.todo.entity.TaskRelation;
-import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.mail.MailRequest;
 import com.vaahathi.todo.models.mail.MailResponse;
 import com.vaahathi.todo.repository.MailRepository;
@@ -56,11 +54,5 @@ public class MailService {
 
             return modelMapper.map(savedMail, MailResponse.class);
         }
-    }
-
-    public Mail closeMail(UUID mailId) {
-        Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ResourceNotFoundException("Mail not found"));
-        mail.setStatus(Status.CLOSED);
-        return mailRepository.save(mail);
     }
 }

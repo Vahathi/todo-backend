@@ -1,9 +1,7 @@
 package com.vaahathi.todo.service;
 
 import com.vaahathi.todo.entity.Payment;
-import com.vaahathi.todo.entity.Status;
 import com.vaahathi.todo.entity.TaskRelation;
-import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.payment.PaymentRequest;
 import com.vaahathi.todo.models.payment.PaymentResponse;
 import com.vaahathi.todo.repository.PaymentRepository;
@@ -56,11 +54,5 @@ public class PaymentService {
 
             return modelMapper.map(savedPayment, PaymentResponse.class);
         }
-    }
-
-    public Payment closePayment(UUID paymentId) {
-        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new ResourceNotFoundException("Payment not found"));
-        payment.setStatus(Status.CLOSED);
-        return paymentRepository.save(payment);
     }
 }
