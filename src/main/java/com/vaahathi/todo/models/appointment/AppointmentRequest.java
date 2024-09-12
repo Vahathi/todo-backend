@@ -27,5 +27,4 @@ public class AppointmentRequest {
     private String category;
     private List<String> parentHierarcy;
 
-
 }

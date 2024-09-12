@@ -24,60 +24,59 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/contacts")
 public class ContactController {
-    @Autowired
-    ContactRepository contactRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+        @Autowired
+        ContactRepository contactRepository;
+        @Autowired
+        private ModelMapper modelMapper;
 
-    @Operation(
-            summary = "Create a new Contact",
-            description = "Id will be automatically generated in UUID format."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "contact created successfully",
-                    content = @Content(schema = @Schema(implementation = Contact.class))),
-            @ApiResponse(responseCode = "404", description = "Resource not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")})
+        @Operation(summary = "Create a new Contact", description = "Id will be automatically generated in UUID format.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "contact created successfully", content = @Content(schema = @Schema(implementation = Contact.class))),
+                        @ApiResponse(responseCode = "404", description = "Resource not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal server error") })
 
-    @PostMapping("/create")
-    public ResponseEntity<ContactResponse> createContact(@RequestBody ContactRequest contactRequest) {
-        Contact contact = modelMapper.map(contactRequest, Contact.class);
-        Contact savedContact = contactRepository.save(contact);
-        ContactResponse contactResponse = modelMapper.map(savedContact, ContactResponse.class);
-        return ResponseEntity.ok(contactResponse);
-    }
+        @PostMapping("/create")
+        public ResponseEntity<ContactResponse> createContact(@RequestBody ContactRequest contactRequest) {
+                Contact contact = modelMapper.map(contactRequest, Contact.class);
+                Contact savedContact = contactRepository.save(contact);
+                ContactResponse contactResponse = modelMapper.map(savedContact, ContactResponse.class);
+                return ResponseEntity.ok(contactResponse);
+        }
 
-    @GetMapping("/List")
-    public ResponseEntity<List<ContactResponse>> getContacts(
-            @RequestParam("ownerId") UUID ownerId,
-            @RequestParam("category") String category) {
-        List<Contact> contacts = contactRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "contact", category);
-        Type listType = new TypeToken<List<ContactResponse>>() {
-        }.getType();
-        List<ContactResponse> contactResponses = modelMapper.map(contacts, listType);
-        return ResponseEntity.ok(contactResponses);
-    }
+        @GetMapping("/List")
+        public ResponseEntity<List<ContactResponse>> getContacts(
+                        @RequestParam("ownerId") UUID ownerId,
+                        @RequestParam("category") String category) {
+                List<Contact> contacts = contactRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "contact",
+                                category);
+                Type listType = new TypeToken<List<ContactResponse>>() {
+                }.getType();
+                List<ContactResponse> contactResponses = modelMapper.map(contacts, listType);
+                return ResponseEntity.ok(contactResponses);
+        }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ContactResponse> updateContact(@PathVariable UUID id, @RequestBody ContactRequest updatedContactRequest) {
-        Contact existingContact = contactRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Contact not found with id: " + id));
-        modelMapper.map(updatedContactRequest, existingContact);
+        @PutMapping("/{id}")
+        public ResponseEntity<ContactResponse> updateContact(@PathVariable UUID id,
+                        @RequestBody ContactRequest updatedContactRequest) {
+                Contact existingContact = contactRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("Contact not found with id: " + id));
+                modelMapper.map(updatedContactRequest, existingContact);
 
-        Contact updatedContact = contactRepository.save(existingContact);
+                Contact updatedContact = contactRepository.save(existingContact);
 
-        ContactResponse contactResponse = modelMapper.map(updatedContact, ContactResponse.class);
+                ContactResponse contactResponse = modelMapper.map(updatedContact, ContactResponse.class);
 
-        return ResponseEntity.ok(contactResponse);
-    }
+                return ResponseEntity.ok(contactResponse);
+        }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<SearchResponse>> searchContact(@RequestParam String search, @RequestParam UUID ownerId) {
-        List<Contact> existingContact = contactRepository.searchByOwnerIDAndName(ownerId, search);
-        List<SearchResponse> destinationList = existingContact.stream()
-                .map(source -> modelMapper.map(source, SearchResponse.class))
-                .toList();
+        @GetMapping("/search")
+        public ResponseEntity<List<SearchResponse>> searchContact(@RequestParam String search,
+                        @RequestParam UUID ownerId) {
+                List<Contact> existingContact = contactRepository.searchByOwnerIDAndName(ownerId, search);
+                List<SearchResponse> destinationList = existingContact.stream()
+                                .map(source -> modelMapper.map(source, SearchResponse.class))
+                                .toList();
 
-        return ResponseEntity.ok(destinationList);
-    }
+                return ResponseEntity.ok(destinationList);
+        }
 }

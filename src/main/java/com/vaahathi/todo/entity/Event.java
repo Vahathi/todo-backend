@@ -30,7 +30,4 @@ public class Event extends BaseEntity {
     private UUID ownerId;
     private String name;
     private List<String> hierarchy;
-
 }
-
-
