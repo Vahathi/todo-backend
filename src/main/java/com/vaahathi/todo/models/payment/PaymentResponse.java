@@ -25,7 +25,7 @@ public class PaymentResponse {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private String paymentPurpose;
     private int amount;
     private String arrearsOrPenalty;
@@ -35,7 +35,7 @@ public class PaymentResponse {
     private String repeatDurationType;
     private int paidStatus;
     private String paidOn;
-    private String paymentHistory;
     private String message;
     private List<String> hierarchy;
+    private List<String> history;
 }

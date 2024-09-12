@@ -21,10 +21,10 @@ public class AppointmentRequest {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private String personName;
     private long phoneNumber;
     private String category;
     private List<String> parentHierarcy;
-
+    private List<String> history;
 }

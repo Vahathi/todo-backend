@@ -22,9 +22,9 @@ public class ToDoRequest {
     private boolean Urgent;
     private boolean Important;
     private String purpose;
-    private boolean dependency;
+
     private long phoneNumber;
     private String toDoHistory;
-    private String note;
+    private List<String> history;
     private List<String> parentHierarcy;
 }

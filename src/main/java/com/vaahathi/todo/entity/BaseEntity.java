@@ -1,4 +1,5 @@
 package com.vaahathi.todo.entity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
@@ -21,5 +22,5 @@ public abstract class BaseEntity {
     private LocalDateTime updatedAt;
     private String createdBy;
     private String updatedBy;
-
+    private List<String> history;
 }

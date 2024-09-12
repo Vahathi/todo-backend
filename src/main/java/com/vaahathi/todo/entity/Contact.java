@@ -34,6 +34,6 @@ public class Contact extends BaseEntity {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private List<String> hierarchy;
 }

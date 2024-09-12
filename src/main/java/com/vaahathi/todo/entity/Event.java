@@ -24,7 +24,7 @@ public class Event extends BaseEntity {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private boolean isParent;
     private String category;
     private UUID ownerId;

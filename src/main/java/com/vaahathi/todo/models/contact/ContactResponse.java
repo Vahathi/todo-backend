@@ -33,5 +33,5 @@ public class ContactResponse {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
 }

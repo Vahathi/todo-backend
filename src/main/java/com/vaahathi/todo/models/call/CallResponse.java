@@ -24,12 +24,12 @@ public class CallResponse {
     private boolean isImportant;
     private String purpose;
     private String category;
-    private boolean dependency;
+
     private UUID ownerId;
     private List<Long> accessibleBy;
     private int assignedTo;
     private String personName;
     private long phoneNumber;
-    private String callNote;
+    private List<String> history;
     private List<String> hierarchy;
 }

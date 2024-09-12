@@ -23,7 +23,7 @@ public class PaymentRequest {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private String paymentPurpose;
     private int amount;
     private String arrearsOrPenalty;
@@ -33,8 +33,8 @@ public class PaymentRequest {
     private String repeatDurationType;
     private int paidStatus;
     private String paidOn;
-    private String paymentHistory;
     private String message;
     private List<String> parentHierarcy;
+    private List<String> history;
 
 }

@@ -25,9 +25,10 @@ public class EventResponse {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private String category;
     private UUID ownerId;
     private String name;
     private List<String> hierarchy;
+    private List<String> history;
 }
