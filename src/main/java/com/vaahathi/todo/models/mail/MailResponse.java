@@ -25,8 +25,9 @@ public class MailResponse {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private String personName;
     private String eMailId;
     private List<String> hierarchy;
+    private List<String> history;
 }

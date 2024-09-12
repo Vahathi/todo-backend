@@ -56,5 +56,4 @@ public class AppointmentService {
             return modelMapper.map(savedAppointment, AppointmentResponse.class);
         }
     }
-
 }

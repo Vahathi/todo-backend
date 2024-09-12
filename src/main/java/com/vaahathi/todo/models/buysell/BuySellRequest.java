@@ -22,9 +22,9 @@ public class BuySellRequest {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private String personName;
     private long phoneNumber;
-    private String callNote;
+    private List<String> history;
     private List<String> parentHierarcy;
 }

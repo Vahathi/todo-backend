@@ -22,12 +22,12 @@ public class CallRequest {
     private boolean isImportant;
     private String purpose;
     private String category;
-    private boolean dependency;
+
     private List<Long> accessibleBy;
     private int assignedTo;
     private String personName;
     private long phoneNumber;
-    private String callNote;
+    private List<String> history;
     private List<String> parentHierarcy;
 
 }

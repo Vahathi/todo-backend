@@ -21,7 +21,7 @@ public class PaymentService {
     TaskRelationRepository taskRelationRepository;
 
     @Autowired
-    PaymentRepository paymentsRepository;
+    PaymentRepository paymentRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -32,10 +32,7 @@ public class PaymentService {
             throw new Exception("PID cannot be empty");
         } else {
             Payment payments = modelMapper.map(paymentRequest, Payment.class);
-            List<String> tempHierarcy = paymentRequest.getParentHierarcy();
-            tempHierarcy.add(payments.getPurpose());
-            payments.setHierarchy(tempHierarcy);
-            Payment savedPayment = paymentsRepository.save(payments);
+            Payment savedPayment = paymentRepository.save(payments);
             // adding a record in task relation table
             TaskRelation taskRelation = new TaskRelation();
             taskRelation.setId(savedPayment.getId());
@@ -45,7 +42,8 @@ public class PaymentService {
             taskRelationRepository.save(taskRelation);
             // updating parent record in task relation table.
             if (taskRelationRepository.existsById(paymentRequest.getPid())) {
-                TaskRelation parentRelation = taskRelationRepository.findById(paymentRequest.getPid()).orElseThrow(() -> new Exception("can't find parent with given pid"));
+                TaskRelation parentRelation = taskRelationRepository.findById(paymentRequest.getPid())
+                        .orElseThrow(() -> new Exception("can't find parent with given pid"));
                 parentRelation.getCid().add(savedPayment.getId());
                 taskRelationRepository.save(parentRelation);
             } else {

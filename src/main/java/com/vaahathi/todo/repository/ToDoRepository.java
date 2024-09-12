@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
+
 @Repository
-public interface ToDoRepository extends JpaRepository<ToDo,UUID> {
+public interface ToDoRepository extends JpaRepository<ToDo, UUID> {
     List<ToDo> findByOwnerIdAndTaskTypeAndCategory(UUID ownerId, String taskType, String category);
 }
-
 

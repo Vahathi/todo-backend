@@ -25,7 +25,7 @@ public class BuySell extends BaseEntity {
     private boolean isImportant;
     private String taskType = "buysell";
     private String purpose;
-    private boolean dependency;
+
     private String personName;
     private long phoneNumber;
     private String callNote;

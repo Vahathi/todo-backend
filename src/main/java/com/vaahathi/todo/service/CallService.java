@@ -45,7 +45,8 @@ public class CallService {
             taskRelationRepository.save(taskRelation);
             // updating parent record in task relation table.
             if (taskRelationRepository.existsById(callRequest.getPid())) {
-                TaskRelation parentRelation = taskRelationRepository.findById(callRequest.getPid()).orElseThrow(() -> new Exception("can't find parent with given pid"));
+                TaskRelation parentRelation = taskRelationRepository.findById(callRequest.getPid())
+                        .orElseThrow(() -> new Exception("can't find parent with given pid"));
                 parentRelation.getCid().add(savedCall.getId());
                 taskRelationRepository.save(parentRelation);
             } else {

@@ -25,7 +25,7 @@ public class Call extends BaseEntity {
     private boolean isImportant;
     private String purpose;
     private String category;
-    private boolean dependency;
+
     private UUID ownerId;
     private List<Long> accessibleBy;
     private int assignedTo;
