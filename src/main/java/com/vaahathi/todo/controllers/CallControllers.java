@@ -18,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -60,10 +62,33 @@ public class CallControllers {
             @RequestParam("ownerId") UUID ownerId,
             @RequestParam("category") String category) {
         List<Call> calls = callRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "call", category);
+        calls.sort(Comparator.comparingInt(call -> calculatePriority(call.isImportant(), call.isUrgent())));
         Type listType = new TypeToken<List<CallResponse>>() {
         }.getType();
         List<CallResponse> callResponses = modelMapper.map(calls, listType);
         return ResponseEntity.ok(callResponses);
+    }
+
+    private int calculatePriority(boolean isImportant, boolean isUrgent) {
+        if (isImportant && isUrgent) {
+            return 1;  // Highest priority
+        } else if (!isImportant && isUrgent) {
+            return 2;  // Second priority
+        } else if (isImportant && !isUrgent) {
+            return 3;  // Third priority
+        } else {
+            return 4;  // Lowest priority
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Call> getCallById(@PathVariable UUID id) {
+        Optional<Call> call = callRepository.findById(id);
+        if (call.isPresent()) {
+            return ResponseEntity.ok(call.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")

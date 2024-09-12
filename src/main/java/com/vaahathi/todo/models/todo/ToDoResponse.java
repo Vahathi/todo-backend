@@ -27,7 +27,8 @@ public class ToDoResponse {
     private String purpose;
     private boolean dependency;
     private long phoneNumber;
-    private String toDoHistory;
-    private String note;
     private List<String> hierarchy;
+    private String status;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

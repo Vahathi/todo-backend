@@ -29,4 +29,7 @@ public class MailResponse {
     private String personName;
     private String eMailId;
     private List<String> hierarchy;
+    private String status;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

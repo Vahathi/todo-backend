@@ -19,18 +19,17 @@ public class Call extends BaseEntity {
     private UUID pid;
     private List<UUID> cid;
     private String taskType = "call";
-    private boolean taskScheduled;
+    private boolean isScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
     private String category;
-    private boolean dependency;
     private UUID ownerId;
-    private List<Long> accessibleBy;
-    private int assignedTo;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
     private String personName;
     private long phoneNumber;
-    private String callNote;
     private List<String> hierarchy;
+    private String status = "initiated";
 }

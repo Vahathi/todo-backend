@@ -19,16 +19,15 @@ public class BuySell extends BaseEntity {
     private UUID pid;
     private String category;
     private UUID ownerId;
-    private boolean taskScheduled;
+    private boolean isScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String taskType = "buysell";
     private String purpose;
-    private boolean dependency;
     private String personName;
     private long phoneNumber;
-    private String callNote;
     private List<String> hierarchy;
-
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

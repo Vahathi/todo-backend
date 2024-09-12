@@ -23,11 +23,11 @@ public class CallRequest {
     private String purpose;
     private String category;
     private boolean dependency;
-    private List<Long> accessibleBy;
-    private int assignedTo;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
     private String personName;
     private long phoneNumber;
-    private String callNote;
     private List<String> parentHierarcy;
+    private String status = "initiated";
 
 }

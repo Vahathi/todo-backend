@@ -19,16 +19,16 @@ public class ToDo extends BaseEntity {
     private UUID pid;
     private List<UUID> cid;
     private String taskType = "todo";
-    private boolean TaskScheduled;
+    private boolean isScheduled;
     private LocalDateTime appointmentDate;
     private String category;
     private UUID ownerId;
     private boolean Urgent;
     private boolean Important;
     private String purpose;
-    private boolean dependency;
     private long phoneNumber;
-    private String toDoHistory;
-    private String note;
     private List<String> hierarchy;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

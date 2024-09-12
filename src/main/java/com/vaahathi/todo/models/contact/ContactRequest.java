@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -28,5 +29,6 @@ public class ContactRequest {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

@@ -29,11 +29,13 @@ public class Contact extends BaseEntity {
     private String category;
     private UUID ownerId;
     private String note;
-    private boolean taskScheduled;
+    private boolean isScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
     private List<String> hierarchy;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

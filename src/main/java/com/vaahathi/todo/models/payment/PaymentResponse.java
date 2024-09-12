@@ -35,7 +35,9 @@ public class PaymentResponse {
     private String repeatDurationType;
     private int paidStatus;
     private String paidOn;
-    private String paymentHistory;
     private String message;
     private List<String> hierarchy;
+    private String status;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

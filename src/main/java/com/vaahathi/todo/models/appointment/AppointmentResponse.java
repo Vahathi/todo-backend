@@ -29,4 +29,7 @@ public class AppointmentResponse {
     private String personName;
     private long phoneNumber;
     private List<String> hierarchy;
+    private String status;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

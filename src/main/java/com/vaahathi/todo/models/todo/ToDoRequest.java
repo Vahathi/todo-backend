@@ -24,7 +24,8 @@ public class ToDoRequest {
     private String purpose;
     private boolean dependency;
     private long phoneNumber;
-    private String toDoHistory;
-    private String note;
     private List<String> parentHierarcy;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

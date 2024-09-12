@@ -28,6 +28,8 @@ public class BuySellResponse {
     private boolean dependency;
     private String personName;
     private long phoneNumber;
-    private String callNote;
     private List<String> hierarchy;
+    private String status;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

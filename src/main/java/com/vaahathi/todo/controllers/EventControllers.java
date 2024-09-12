@@ -19,7 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -56,10 +58,34 @@ public class EventControllers {
             @RequestParam("ownerId") UUID ownerId,
             @RequestParam("isParent") boolean isParent) {
         List<Event> events = eventRepository.findByCategoryAndOwnerIdAndIsParent(category, ownerId, isParent);
+        events.sort(Comparator.comparingInt(event -> calculatePriority(event.isImportant(), event.isUrgent())));
         Type listType = new TypeToken<List<EventResponse>>() {
         }.getType();
         List<EventResponse> eventResponses = modelMapper.map(events, listType);
         return ResponseEntity.ok(eventResponses);
+    }
+
+    private int calculatePriority(boolean isImportant, boolean isUrgent) {
+        if (isImportant && isUrgent) {
+            return 1;  // Highest priority
+        } else if (!isImportant && isUrgent) {
+            return 2;  // Second priority
+        } else if (isImportant && !isUrgent) {
+            return 3;  // Third priority
+        } else {
+            return 4;  // Lowest priority
+        }
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Event> getEventById(@PathVariable UUID id) {
+        Optional<Event> event = eventRepository.findById(id);
+        if (event.isPresent()) {
+            return ResponseEntity.ok(event.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")

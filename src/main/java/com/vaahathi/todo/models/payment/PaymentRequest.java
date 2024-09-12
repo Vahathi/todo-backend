@@ -33,8 +33,10 @@ public class PaymentRequest {
     private String repeatDurationType;
     private int paidStatus;
     private String paidOn;
-    private String paymentHistory;
     private String message;
     private List<String> parentHierarcy;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -56,6 +57,16 @@ public class ContactController {
         }.getType();
         List<ContactResponse> contactResponses = modelMapper.map(contacts, listType);
         return ResponseEntity.ok(contactResponses);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Contact> getContactById(@PathVariable UUID id) {
+        Optional<Contact> contact = contactRepository.findById(id);
+        if (contact.isPresent()) {
+            return ResponseEntity.ok(contact.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")

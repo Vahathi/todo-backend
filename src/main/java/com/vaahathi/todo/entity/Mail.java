@@ -21,14 +21,16 @@ public class Mail extends BaseEntity {
     private String taskType = "mail";
     private String category;
     private UUID ownerId;
-    private boolean taskScheduled;
+    private boolean isScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
     private String personName;
     private String eMailId;
     private List<String> hierarchy;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 
 }

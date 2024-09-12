@@ -19,17 +19,19 @@ public class Event extends BaseEntity {
     private UUID pid;
     private List<UUID> cid;
     private String taskType = "event";
-    private boolean taskScheduled;
+    private boolean isScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
     private boolean isParent;
     private String category;
     private UUID ownerId;
     private String name;
     private List<String> hierarchy;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 
 }
 

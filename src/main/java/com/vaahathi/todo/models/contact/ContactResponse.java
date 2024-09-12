@@ -34,4 +34,7 @@ public class ContactResponse {
     private boolean isImportant;
     private String purpose;
     private boolean dependency;
+    private String status;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

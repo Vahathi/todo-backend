@@ -21,12 +21,11 @@ public class Payment extends BaseEntity {
     private String taskType = "payment";
     private String category;
     private UUID ownerId;
-    private boolean taskScheduled;
+    private boolean isScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
     private String paymentPurpose;
     private int amount;
     private String arrearsOrPenalty;
@@ -36,7 +35,9 @@ public class Payment extends BaseEntity {
     private String repeatDurationType;
     private int paidStatus;
     private String paidOn;
-    private String paymentHistory;
     private String message;
     private List<String> hierarchy;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

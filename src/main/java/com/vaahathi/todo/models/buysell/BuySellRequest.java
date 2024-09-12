@@ -25,6 +25,8 @@ public class BuySellRequest {
     private boolean dependency;
     private String personName;
     private long phoneNumber;
-    private String callNote;
     private List<String> parentHierarcy;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

@@ -17,8 +17,6 @@ public class EventResponse {
     private UUID id;
     private UUID pid;
     private List<UUID> cid;
-    private String createdBy;
-    private String updatedBy;
     private String taskType;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;
@@ -30,4 +28,7 @@ public class EventResponse {
     private UUID ownerId;
     private String name;
     private List<String> hierarchy;
+    private String status;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }
