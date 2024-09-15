@@ -29,5 +29,4 @@ public class AppointmentRequest {
     private List<UUID> accessibleBy;
     private UUID assignedTo;
 
-
 }

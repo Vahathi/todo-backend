@@ -23,7 +23,7 @@ public class PaymentRequest {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private String paymentPurpose;
     private int amount;
     private String arrearsOrPenalty;

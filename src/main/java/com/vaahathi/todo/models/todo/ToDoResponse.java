@@ -25,7 +25,7 @@ public class ToDoResponse {
     private boolean Urgent;
     private boolean Important;
     private String purpose;
-    private boolean dependency;
+
     private long phoneNumber;
     private List<String> hierarchy;
     private String status;

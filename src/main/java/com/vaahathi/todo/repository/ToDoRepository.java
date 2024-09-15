@@ -11,4 +11,3 @@ import java.util.UUID;
 public interface ToDoRepository extends JpaRepository<ToDo, UUID> {
     List<ToDo> findByOwnerIdAndCategory(UUID ownerId, String category);
 }
-

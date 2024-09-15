@@ -10,5 +10,3 @@ public class Event extends CommonBaseEntity {
     private String name;
 
 }
-
-

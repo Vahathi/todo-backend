@@ -24,7 +24,7 @@ public class CallResponse {
     private boolean isImportant;
     private String purpose;
     private String category;
-    private boolean dependency;
+
     private UUID ownerId;
     private List<UUID> accessibleBy;
     private UUID assignedTo;
