@@ -18,5 +18,4 @@ public abstract class BaseEntity {
     private LocalDateTime updatedAt;
     private String createdBy;
     private String updatedBy;
-    private List<String> history;
 }
