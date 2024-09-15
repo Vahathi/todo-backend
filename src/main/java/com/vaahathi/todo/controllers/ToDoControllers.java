@@ -63,7 +63,7 @@ public class ToDoControllers {
     public ResponseEntity<List<ToDoResponse>> getToDoList(
             @RequestParam("ownerId") UUID ownerId,
             @RequestParam("category") String category) {
-        List<ToDo> todos = toDoRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "todo", category);
+        List<ToDo> todos = toDoRepository.findByOwnerIdAndCategory(ownerId, category);
         todos.sort(Comparator.comparingInt(todo -> calculatePriority(todo.isImportant(), todo.isUrgent())));
         Type listType = new TypeToken<List<ToDoResponse>>() {
         }.getType();

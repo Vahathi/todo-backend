@@ -71,7 +71,7 @@ public class PaymentControllers {
     public ResponseEntity<List<PaymentResponse>> getPayments(
             @RequestParam("ownerId") UUID ownerId,
             @RequestParam("category") String category) {
-        List<Payment> payments = paymentRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "payment", category);
+        List<Payment> payments = paymentRepository.findByOwnerIdAndCategory(ownerId, category);
         payments.sort(Comparator.comparingInt(payment -> calculatePriority(payment.isImportant(), payment.isUrgent())));
         Type listType = new TypeToken<List<PaymentResponse>>() {
         }.getType();

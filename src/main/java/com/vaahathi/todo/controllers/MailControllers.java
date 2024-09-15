@@ -64,7 +64,7 @@ public class MailControllers {
     public ResponseEntity<List<MailResponse>> getMails(
             @RequestParam("ownerId") UUID ownerId,
             @RequestParam("category") String category) {
-        List<Mail> mails = mailRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "mail", category);
+        List<Mail> mails = mailRepository.findByOwnerIdAndCategory(ownerId, category);
         mails.sort(Comparator.comparingInt(mail -> calculatePriority(mail.isImportant(), mail.isUrgent())));
         Type listType = new TypeToken<List<MailResponse>>() {
         }.getType();

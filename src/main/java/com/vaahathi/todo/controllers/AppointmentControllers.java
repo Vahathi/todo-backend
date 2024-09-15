@@ -62,7 +62,7 @@ public class AppointmentControllers {
     public ResponseEntity<List<AppointmentResponse>> getAppointments(
             @RequestParam("ownerId") UUID ownerId,
             @RequestParam("category") String category) {
-        List<Appointment> appointments = appointmentRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "appointment", category);
+        List<Appointment> appointments = appointmentRepository.findByOwnerIdAndCategory(ownerId, category);
         appointments.sort(Comparator.comparingInt(app -> calculatePriority(app.isImportant(), app.isUrgent())));
         Type listType = new TypeToken<List<AppointmentResponse>>() {
         }.getType();

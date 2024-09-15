@@ -33,6 +33,7 @@ public class EventService {
             List<String> tempHierarcy = new ArrayList<String>();
             tempHierarcy.add(eventRequest.getPurpose());
             event.setHierarchy(tempHierarcy);
+            event.setParent(true);
             Event savedEvent = eventRepository.save(event);
             TaskRelation currentTaskRelation = new TaskRelation();
             currentTaskRelation.setId(savedEvent.getId());

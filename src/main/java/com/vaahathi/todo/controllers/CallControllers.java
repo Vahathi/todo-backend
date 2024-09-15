@@ -61,7 +61,7 @@ public class CallControllers {
     public ResponseEntity<List<CallResponse>> getCallList(
             @RequestParam("ownerId") UUID ownerId,
             @RequestParam("category") String category) {
-        List<Call> calls = callRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "call", category);
+        List<Call> calls = callRepository.findByOwnerIdAndCategory(ownerId, category);
         calls.sort(Comparator.comparingInt(call -> calculatePriority(call.isImportant(), call.isUrgent())));
         Type listType = new TypeToken<List<CallResponse>>() {
         }.getType();
