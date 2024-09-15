@@ -23,7 +23,7 @@ public class EventResponse {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private String category;
     private UUID ownerId;
     private String name;

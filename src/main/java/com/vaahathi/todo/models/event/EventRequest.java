@@ -21,7 +21,7 @@ public class EventRequest {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private boolean dependency;
+
     private String category;
     private String name;
     private List<String> parentHierarcy;
