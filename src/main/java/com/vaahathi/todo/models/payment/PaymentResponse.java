@@ -37,5 +37,7 @@ public class PaymentResponse {
     private String paidOn;
     private String message;
     private List<String> hierarchy;
-    private List<String> history;
+    private String status;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

@@ -20,9 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-
 
 
 @RestController
@@ -40,40 +41,61 @@ public class AppointmentControllers {
     @Autowired
     private ModelMapper modelMapper;
 
-@Operation(
-        summary = "creating an appointment",
-        description = "Id will be automatically generated in UUID format"
-)
-@ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Appointment created successfully",
-                content = @Content(schema = @Schema(implementation = Appointment.class))),
-        @ApiResponse(responseCode = "404", description = "Resource not found"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")})
+    @Operation(
+            summary = "creating an appointment",
+            description = "Id will be automatically generated in UUID format"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Appointment created successfully",
+                    content = @Content(schema = @Schema(implementation = Appointment.class))),
+            @ApiResponse(responseCode = "404", description = "Resource not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")})
 
 
-@PostMapping ("/create")
-public ResponseEntity<AppointmentResponse>  createAppointment(@RequestBody AppointmentRequest appointmentRequest) throws Exception {
-    AppointmentResponse appointmentResponse = appointmentService.CreateAppointmentAndUpdateTaskRel(appointmentRequest);
-    return ResponseEntity.ok(appointmentResponse);
-}
-//public ResponseEntity<AppointmentResponse> createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
-//    Appointment appointment= modelMapper.map(appointmentRequest, Appointment.class);
-//    Appointment savedAppointment = appointmentRepository.save(appointment);
-//    AppointmentResponse appointmentResponse = modelMapper.map(savedAppointment, AppointmentResponse.class);
-//    return ResponseEntity.ok(appointmentResponse);
-//}
-@GetMapping ("/List")
-public ResponseEntity <List<AppointmentResponse>> getAppointments(
-        @RequestParam("ownerId") UUID ownerId,
-        @RequestParam("category") String category) {
-    List<Appointment> appointments = appointmentRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId , "appointment" ,category);
-    Type listType = new TypeToken<List<AppointmentResponse>>() {}.getType();
-    List<AppointmentResponse> appointmentResponses = modelMapper.map(appointments, listType);
-    return ResponseEntity.ok(appointmentResponses);
-}
+    @PostMapping("/create")
+    public ResponseEntity<AppointmentResponse> createAppointment(@RequestBody AppointmentRequest appointmentRequest) throws Exception {
+        AppointmentResponse appointmentResponse = appointmentService.CreateAppointmentAndUpdateTaskRel(appointmentRequest);
+        return ResponseEntity.ok(appointmentResponse);
+    }
+
+    @GetMapping("/List")
+    public ResponseEntity<List<AppointmentResponse>> getAppointments(
+            @RequestParam("ownerId") UUID ownerId,
+            @RequestParam("category") String category) {
+        List<Appointment> appointments = appointmentRepository.findByOwnerIdAndCategory(ownerId, category);
+        appointments.sort(Comparator.comparingInt(app -> calculatePriority(app.isImportant(), app.isUrgent())));
+        Type listType = new TypeToken<List<AppointmentResponse>>() {
+        }.getType();
+        List<AppointmentResponse> appointmentResponses = modelMapper.map(appointments, listType);
+
+        return ResponseEntity.ok(appointmentResponses);
+    }
+
+    private int calculatePriority(boolean isImportant, boolean isUrgent) {
+        if (isImportant && isUrgent) {
+            return 1;  // Highest priority
+        } else if (!isImportant && isUrgent) {
+            return 2;  // Second priority
+        } else if (isImportant && !isUrgent) {
+            return 3;  // Third priority
+        } else {
+            return 4;  // Lowest priority
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Appointment> getAppointmentById(@PathVariable UUID id) {
+        Optional<Appointment> appointment = appointmentRepository.findById(id);
+        if (appointment.isPresent()) {
+            return ResponseEntity.ok(appointment.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentResponse> updateAppointment(@PathVariable UUID id, @RequestBody AppointmentRequest updatedAppointmentRequest) {
-        Appointment existingAppointment =  appointmentRepository.findById(id).orElseThrow(() ->
+        Appointment existingAppointment = appointmentRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Appointment not found with id: " + id));
         modelMapper.map(updatedAppointmentRequest, existingAppointment);
         Appointment updatedAppointment = appointmentRepository.save(existingAppointment);

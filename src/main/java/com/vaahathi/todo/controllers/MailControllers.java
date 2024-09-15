@@ -18,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -59,14 +61,38 @@ public class MailControllers {
 //        return ResponseEntity.ok(mailResponse);
     // }
     @GetMapping("/list")
-    public ResponseEntity<List<MailResponse>> getMails
-    (@RequestParam("ownerId") UUID ownerId,
-     @RequestParam("category") String category) {
-        List<Mail> mails = mailRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId, "mail", category);
+    public ResponseEntity<List<MailResponse>> getMails(
+            @RequestParam("ownerId") UUID ownerId,
+            @RequestParam("category") String category) {
+        List<Mail> mails = mailRepository.findByOwnerIdAndCategory(ownerId, category);
+        mails.sort(Comparator.comparingInt(mail -> calculatePriority(mail.isImportant(), mail.isUrgent())));
         Type listType = new TypeToken<List<MailResponse>>() {
         }.getType();
         List<MailResponse> mailResponses = modelMapper.map(mails, listType);
         return ResponseEntity.ok(mailResponses);
+    }
+
+    private int calculatePriority(boolean isImportant, boolean isUrgent) {
+        if (isImportant && isUrgent) {
+            return 1;  // Highest priority
+        } else if (!isImportant && isUrgent) {
+            return 2;  // Second priority
+        } else if (isImportant && !isUrgent) {
+            return 3;  // Third priority
+        } else {
+            return 4;  // Lowest priority
+        }
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Mail> getMailById(@PathVariable UUID id) {
+        Optional<Mail> mail = mailRepository.findById(id);
+        if (mail.isPresent()) {
+            return ResponseEntity.ok(mail.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")

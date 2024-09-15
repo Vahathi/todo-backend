@@ -25,6 +25,8 @@ public class BuySellRequest {
 
     private String personName;
     private long phoneNumber;
-    private List<String> history;
     private List<String> parentHierarcy;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

@@ -18,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -45,7 +47,8 @@ public class PaymentControllers {
         PaymentResponse paymentResponse = paymentService.createPaymentTaskRel(paymentRequest);
         return ResponseEntity.ok(paymentResponse);
     }
-//    public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest paymentRequest) {
+
+    //    public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest paymentRequest) {
 //        paymentRequest.setPurpose(paymentRequest.getPurpose());
 //        paymentRequest.setImportant(!paymentRequest.isImportant());
 //        Payment payment = modelMapper.map(paymentRequest, Payment.class);
@@ -55,7 +58,7 @@ public class PaymentControllers {
 //    }
     @PutMapping("/{id}")
     public ResponseEntity<PaymentResponse> updatePayment(@PathVariable UUID id, @RequestBody PaymentRequest updatedPaymentRequest) {
-        Payment existingPayment=  paymentRepository.findById(id).orElseThrow(() ->
+        Payment existingPayment = paymentRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Payment not found with id: " + id));
         modelMapper.map(updatedPaymentRequest, existingPayment);
         Payment updatedPayment = paymentRepository.save(existingPayment);
@@ -64,13 +67,38 @@ public class PaymentControllers {
     }
 
 
-    @GetMapping("/List")
-    public ResponseEntity<List<PaymentResponse>>getPayments
-            (@RequestParam("ownerId") UUID ownerId,
-             @RequestParam("category") String category) {
-        List<Payment> payments = paymentRepository.findByOwnerIdAndTaskTypeAndCategory(ownerId,"payment", category);
-        Type listType = new TypeToken<List<PaymentResponse>>() {}.getType();
+    @GetMapping("/list")
+    public ResponseEntity<List<PaymentResponse>> getPayments(
+            @RequestParam("ownerId") UUID ownerId,
+            @RequestParam("category") String category) {
+        List<Payment> payments = paymentRepository.findByOwnerIdAndCategory(ownerId, category);
+        payments.sort(Comparator.comparingInt(payment -> calculatePriority(payment.isImportant(), payment.isUrgent())));
+        Type listType = new TypeToken<List<PaymentResponse>>() {
+        }.getType();
         List<PaymentResponse> paymentResponses = modelMapper.map(payments, listType);
         return ResponseEntity.ok(paymentResponses);
     }
+
+    private int calculatePriority(boolean isImportant, boolean isUrgent) {
+        if (isImportant && isUrgent) {
+            return 1;  // Highest priority
+        } else if (!isImportant && isUrgent) {
+            return 2;  // Second priority
+        } else if (isImportant && !isUrgent) {
+            return 3;  // Third priority
+        } else {
+            return 4;  // Lowest priority
+        }
     }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Payment> getPaymentById(@PathVariable UUID id) {
+        Optional<Payment> payment = paymentRepository.findById(id);
+        if (payment.isPresent()) {
+            return ResponseEntity.ok(payment.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}

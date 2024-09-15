@@ -28,6 +28,8 @@ public class BuySellResponse {
 
     private String personName;
     private long phoneNumber;
-    private List<String> history;
     private List<String> hierarchy;
+    private String status;
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

@@ -16,8 +16,6 @@ import java.util.UUID;
 public class EventRequest {
     private UUID ownerId;
     private UUID pid;
-    private String createdBy;
-    private String updatedBy;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
@@ -27,5 +25,7 @@ public class EventRequest {
     private String category;
     private String name;
     private List<String> parentHierarcy;
-    private List<String> history;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

@@ -21,10 +21,12 @@ public class AppointmentRequest {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-
     private String personName;
     private long phoneNumber;
     private String category;
     private List<String> parentHierarcy;
-    private List<String> history;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
+
 }

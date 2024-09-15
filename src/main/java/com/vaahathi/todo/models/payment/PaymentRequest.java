@@ -35,6 +35,8 @@ public class PaymentRequest {
     private String paidOn;
     private String message;
     private List<String> parentHierarcy;
-    private List<String> history;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 
 }

@@ -27,5 +27,7 @@ public class MailRequest {
     private String personName;
     private String eMailId;
     private List<String> parentHierarcy;
-    private List<String> history;
+    private String status = "initiated";
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }

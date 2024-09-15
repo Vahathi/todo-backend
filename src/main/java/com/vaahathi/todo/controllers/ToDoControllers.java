@@ -18,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -31,6 +33,7 @@ public class ToDoControllers {
     private ToDoService toDoService;
     @Autowired
     private ModelMapper modelMapper;
+
     @Operation(
             summary = "Create a new todo",
             description = "Id will be automatically generated in UUID format."
@@ -45,7 +48,8 @@ public class ToDoControllers {
         ToDoResponse toDoResponse = toDoService.createToDoAndUpdateTaskRel(toDoRequest);
         return ResponseEntity.ok(toDoResponse);
     }
-//    public ResponseEntity <ToDoResponse> createToDo(@RequestBody ToDoRequest toDoRequest) {
+
+    //    public ResponseEntity <ToDoResponse> createToDo(@RequestBody ToDoRequest toDoRequest) {
 //        toDoRequest.setPurpose(toDoRequest.getPurpose());
 //        toDoRequest.setAppointmentDate(toDoRequest.getAppointmentDate());
 //        toDoRequest.setImportant(toDoRequest.isImportant());
@@ -54,18 +58,33 @@ public class ToDoControllers {
 //        ToDo savedToDo = toDoRepository.save(toDo);
 //        ToDoResponse response = modelMapper.map(savedToDo, ToDoResponse.class);
 //        return ResponseEntity.ok(response);
-  //  }
+    //  }
     @GetMapping("/list")
-    public ResponseEntity<List<ToDoResponse>>getToDoList(
-            @RequestParam("OwnerId") UUID ownerId,
+    public ResponseEntity<List<ToDoResponse>> getToDoList(
+            @RequestParam("ownerId") UUID ownerId,
             @RequestParam("category") String category) {
-        List<ToDo> todos = toDoRepository.findByOwnerIdAndTaskTypeAndCategory( ownerId, "todo", category);
-        Type listType = new TypeToken<List<ToDoResponse>>() {}.getType();
+        List<ToDo> todos = toDoRepository.findByOwnerIdAndCategory(ownerId, category);
+        todos.sort(Comparator.comparingInt(todo -> calculatePriority(todo.isImportant(), todo.isUrgent())));
+        Type listType = new TypeToken<List<ToDoResponse>>() {
+        }.getType();
         List<ToDoResponse> todoResponses = modelMapper.map(todos, listType);
         return ResponseEntity.ok(todoResponses);
     }
+
+    private int calculatePriority(boolean isImportant, boolean isUrgent) {
+        if (isImportant && isUrgent) {
+            return 1;  // Highest priority
+        } else if (!isImportant && isUrgent) {
+            return 2;  // Second priority
+        } else if (isImportant && !isUrgent) {
+            return 3;  // Third priority
+        } else {
+            return 4;  // Lowest priority
+        }
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity <ToDoResponse> updateToDo(@PathVariable UUID id, @RequestBody ToDoRequest updatedToDoRequest) {
+    public ResponseEntity<ToDoResponse> updateToDo(@PathVariable UUID id, @RequestBody ToDoRequest updatedToDoRequest) {
         ToDo existingToDo = (ToDo) toDoRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("TODO not found with id: " + id));
         modelMapper.map(updatedToDoRequest, existingToDo);
@@ -76,5 +95,15 @@ public class ToDoControllers {
 
         return ResponseEntity.ok(toDoResponse);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ToDo> getToDoById(@PathVariable UUID id) {
+        Optional<ToDo> toDo = toDoRepository.findById(id);
+        if (toDo.isPresent()) {
+            return ResponseEntity.ok(toDo.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+}
 

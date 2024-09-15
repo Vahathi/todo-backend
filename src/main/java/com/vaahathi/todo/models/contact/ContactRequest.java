@@ -28,5 +28,6 @@ public class ContactRequest {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-
+    private List<UUID> accessibleBy;
+    private UUID assignedTo;
 }
