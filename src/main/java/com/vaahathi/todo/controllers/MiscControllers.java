@@ -109,7 +109,8 @@ public class MiscControllers {
     }
 
     @GetMapping
-    ResponseEntity<List<ScheduledTasksResponse>> getScheduledTasks(@RequestParam UUID ownerID, @RequestParam String category) {
+    public ResponseEntity<List<ScheduledTasksResponse>> getScheduledTasks(
+            @RequestParam UUID ownerID, @RequestParam String category) {
         List<ScheduledTasksResponse> temp = genericTaskRepository.GetScheduledTasks(ownerID, category);
         log.info("Scheduled Tasks", temp);
         return ResponseEntity.ok(temp);

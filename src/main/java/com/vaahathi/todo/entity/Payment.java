@@ -17,4 +17,5 @@ public class Payment extends CommonBaseEntity {
     private int paidStatus;
     private String paidOn;
     private String message;
+    private String taskType = "payment";
 }

@@ -21,6 +21,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.modelmapper:modelmapper:3.1.1")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
     compileOnly("org.projectlombok:lombok:1.18.28")
     annotationProcessor("org.projectlombok:lombok:1.18.28")
     runtimeOnly("org.postgresql:postgresql")

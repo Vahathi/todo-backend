@@ -25,7 +25,6 @@ public class Contact extends BaseEntity {
     private String personalEMail;
     private String officeEmail;
     private String webpage;
-    private String taskType;
     private UUID ownerId;
     private String note;
     private boolean isScheduled;

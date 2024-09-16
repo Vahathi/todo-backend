@@ -7,5 +7,6 @@ import lombok.Data;
 @Data
 
 public class Appointment extends CommonBaseEntity {
+    private String taskType = "appointment";
 
 }

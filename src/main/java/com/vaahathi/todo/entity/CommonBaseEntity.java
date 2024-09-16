@@ -20,7 +20,6 @@ public class CommonBaseEntity extends BaseEntity {
     private List<UUID> cid;
     private UUID ownerId;
     private String category;
-    private String taskType;
     private boolean isScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;

@@ -6,5 +6,5 @@ import lombok.Data;
 @Entity
 @Data
 public class Call extends CommonBaseEntity {
-
+    private String taskType = "call";
 }
