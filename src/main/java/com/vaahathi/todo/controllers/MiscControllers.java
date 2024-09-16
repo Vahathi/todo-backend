@@ -21,13 +21,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("/misc")
 @Tag(name = "misc", description = "miscellaneous management APIs")
 @Slf4j
 public class MiscControllers {
-
 
     @Autowired
     AppointmentRepository appointmentRepository;
@@ -51,17 +49,13 @@ public class MiscControllers {
     @Autowired
     private GenericTaskRepository genericTaskRepository;
 
-    @Operation(
-            summary = "Get subtasks",
-            description = "gets all subtasks of a task"
-    )
+    @Operation(summary = "Get subtasks", description = "gets all subtasks of a task")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success",
-                    content = @Content(schema = @Schema(implementation = Appointment.class))),
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = Appointment.class))),
             @ApiResponse(responseCode = "404", description = "Resource not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")})
+            @ApiResponse(responseCode = "500", description = "Internal server error") })
 
-    @GetMapping("/{id}")
+    @GetMapping("/subtasks/{id}")
     public ResponseEntity<List<Object>> getSubtasks(
             @PathVariable("id") UUID id) throws Exception {
         List<Object> allsubtasks = new ArrayList<Object>();
@@ -108,7 +102,12 @@ public class MiscControllers {
         return ResponseEntity.ok(allsubtasks);
     }
 
-    @GetMapping
+    @Operation(summary = "Get Scheduled Tasks", description = "gets all Scheduled tasks for a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = ScheduledTasksResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Resource not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error") })
+    @GetMapping("/scheduled-tasks/")
     public ResponseEntity<List<ScheduledTasksResponse>> getScheduledTasks(
             @RequestParam UUID ownerID, @RequestParam String category) {
         List<ScheduledTasksResponse> temp = genericTaskRepository.GetScheduledTasks(ownerID, category);
