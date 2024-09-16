@@ -8,5 +8,6 @@ import lombok.Data;
 public class Event extends CommonBaseEntity {
     private boolean isParent;
     private String name;
+    private String taskType = "event";
 
 }

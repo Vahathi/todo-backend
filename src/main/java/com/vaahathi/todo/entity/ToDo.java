@@ -6,5 +6,6 @@ import lombok.Data;
 @Entity
 @Data
 public class ToDo extends CommonBaseEntity {
+    private String taskType = "toDo";
 
 }

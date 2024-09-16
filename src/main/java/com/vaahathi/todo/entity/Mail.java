@@ -7,5 +7,6 @@ import lombok.Data;
 @Data
 public class Mail extends CommonBaseEntity {
     private String eMailId;
+    private String taskType = "mail";
 
 }

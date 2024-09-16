@@ -6,5 +6,5 @@ import lombok.Data;
 @Entity
 @Data
 public class BuySell extends CommonBaseEntity {
-
+    private String taskType = "buySell";
 }
