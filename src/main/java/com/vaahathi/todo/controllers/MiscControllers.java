@@ -61,7 +61,7 @@ public class MiscControllers {
             @ApiResponse(responseCode = "404", description = "Resource not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/subtask")
     public ResponseEntity<List<Object>> getSubtasks(
             @PathVariable("id") UUID id) throws Exception {
         List<Object> allsubtasks = new ArrayList<Object>();
@@ -108,7 +108,18 @@ public class MiscControllers {
         return ResponseEntity.ok(allsubtasks);
     }
 
-    @GetMapping
+    @Operation(
+            summary = "Get scheduledtasks",
+            description = "gets all scheduledtasks of a task"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success",
+                    content = @Content(schema = @Schema(implementation = ScheduledTasksResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Resource not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")})
+
+
+    @GetMapping("/scheduledtasks")
     public ResponseEntity<List<ScheduledTasksResponse>> getScheduledTasks(
             @RequestParam UUID ownerID, @RequestParam String category) {
         List<ScheduledTasksResponse> temp = genericTaskRepository.GetScheduledTasks(ownerID, category);

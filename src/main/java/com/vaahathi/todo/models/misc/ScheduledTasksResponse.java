@@ -3,13 +3,14 @@ package com.vaahathi.todo.models.misc;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 
 @Data
 @AllArgsConstructor
 public class ScheduledTasksResponse {
-    LocalDateTime scheduledDate;
-    private Map<String, Object> object;
+    private LocalDate scheduledDate;
+    private List<Map<String, Object>> tasks;  // List of tasks
 }
