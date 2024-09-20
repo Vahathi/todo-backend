@@ -25,7 +25,7 @@ public class BuySellResponse {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private String history;
+    private List<String> history;
     private String personName;
     private long phoneNumber;
     private List<String> hierarchy;

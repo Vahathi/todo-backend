@@ -27,7 +27,7 @@ public class CommonBaseEntity extends BaseEntity {
     private String purpose;
     private String personName;
     private long phoneNumber;
-    private String history;
+    private List<String> history;
     private List<String> hierarchy;
     private String status = "initiated";
     private Integer priority;

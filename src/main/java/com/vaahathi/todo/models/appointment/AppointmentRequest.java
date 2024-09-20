@@ -22,7 +22,7 @@ public class AppointmentRequest {
     private boolean isImportant;
     private String purpose;
     private String personName;
-    private String history;
+    private List<String> history;
     private long phoneNumber;
     private String category;
     private List<String> parentHierarcy;

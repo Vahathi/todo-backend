@@ -25,7 +25,7 @@ public class PaymentResponse {
     private boolean isUrgent;
     private boolean isImportant;
     private String purpose;
-    private String history;
+    private List<String> history;
     private String paymentPurpose;
     private int amount;
     private String arrearsOrPenalty;
