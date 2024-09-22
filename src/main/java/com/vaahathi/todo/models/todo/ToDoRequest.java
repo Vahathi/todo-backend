@@ -22,7 +22,7 @@ public class ToDoRequest {
     private boolean Urgent;
     private boolean Important;
     private String purpose;
-    private String history;
+    private List<String> history;
     private long phoneNumber;
     private List<String> parentHierarcy;
     private String status = "initiated";

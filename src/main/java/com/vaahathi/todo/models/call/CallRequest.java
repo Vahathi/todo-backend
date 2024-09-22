@@ -22,7 +22,7 @@ public class CallRequest {
     private boolean isImportant;
     private String purpose;
     private String category;
-    private String history;
+    private List<String> history;
     private boolean dependency;
     private List<UUID> accessibleBy;
     private UUID assignedTo;
