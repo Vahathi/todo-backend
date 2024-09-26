@@ -2,6 +2,7 @@ package com.vaahathi.todo.controllers;
 
 import com.vaahathi.todo.entity.Mail;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
+import com.vaahathi.todo.models.dto.ErrorResponse;
 import com.vaahathi.todo.models.mail.MailRequest;
 import com.vaahathi.todo.models.mail.MailResponse;
 import com.vaahathi.todo.repository.MailRepository;
@@ -14,14 +15,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/mail")
@@ -46,10 +46,29 @@ public class MailControllers {
 
 
     @PostMapping("/create")
-    public ResponseEntity<MailResponse> createMail(@RequestBody MailRequest mailRequest) throws Exception {
-        MailResponse mailResponse = mailService.CreateMailAndUpdateTaskRel(mailRequest);
-        return ResponseEntity.ok(mailResponse);
+    public ResponseEntity<?> createMail(@RequestBody MailRequest mailRequest) {
+        try {
+            // Call the service to create the mail and update the task relationship
+            MailResponse mailResponse = mailService.CreateMailAndUpdateTaskRel(mailRequest);
+            return ResponseEntity.ok(mailResponse);
+        } catch (Exception ex) {
+            // Log the exception and capture the stack trace
+            List<String> stackTrace = Arrays.stream(ex.getStackTrace())
+                    .map(StackTraceElement::toString)
+                    .collect(Collectors.toList());
+
+            // Create a custom error response with a general error message and the stack trace
+            ErrorResponse errorResponse = new ErrorResponse(
+                    "An error occurred while creating the mail.",
+                    ex.getMessage(),
+                    stackTrace
+            );
+
+            // Return the error response with 500 Internal Server Error status
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
+
 
     //    public ResponseEntity<MailResponse> createMail(@RequestBody MailRequest mailRequest) {
 //        mailRequest.setPersonName(mailRequest.getPersonName());

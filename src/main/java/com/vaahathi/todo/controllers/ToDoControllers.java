@@ -2,6 +2,7 @@ package com.vaahathi.todo.controllers;
 
 import com.vaahathi.todo.entity.ToDo;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
+import com.vaahathi.todo.models.dto.ErrorResponse;
 import com.vaahathi.todo.models.todo.ToDoRequest;
 import com.vaahathi.todo.models.todo.ToDoResponse;
 import com.vaahathi.todo.repository.ToDoRepository;
@@ -14,14 +15,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/todos")
@@ -44,10 +44,29 @@ public class ToDoControllers {
             @ApiResponse(responseCode = "404", description = "Resource not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PostMapping("/create")
-    public ResponseEntity<ToDoResponse> createToDo(@RequestBody ToDoRequest toDoRequest) throws Exception {
-        ToDoResponse toDoResponse = toDoService.createToDoAndUpdateTaskRel(toDoRequest);
-        return ResponseEntity.ok(toDoResponse);
+    public ResponseEntity<?> createToDo(@RequestBody ToDoRequest toDoRequest) {
+        try {
+            // Call the service to create the ToDo and update the task relationship
+            ToDoResponse toDoResponse = toDoService.createToDoAndUpdateTaskRel(toDoRequest);
+            return ResponseEntity.ok(toDoResponse);
+        } catch (Exception ex) {
+            // Log the exception and capture the stack trace
+            List<String> stackTrace = Arrays.stream(ex.getStackTrace())
+                    .map(StackTraceElement::toString)
+                    .collect(Collectors.toList());
+
+            // Create a custom error response with a general error message and the stack trace
+            ErrorResponse errorResponse = new ErrorResponse(
+                    "An error occurred while creating the ToDo item.",
+                    ex.getMessage(),
+                    stackTrace
+            );
+
+            // Return the error response with 500 Internal Server Error status
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
+
 
     //    public ResponseEntity <ToDoResponse> createToDo(@RequestBody ToDoRequest toDoRequest) {
 //        toDoRequest.setPurpose(toDoRequest.getPurpose());
