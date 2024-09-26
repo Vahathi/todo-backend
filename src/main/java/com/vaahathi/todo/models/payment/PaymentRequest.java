@@ -17,7 +17,6 @@ public class PaymentRequest {
     private UUID ownerId;
     private UUID pid;
     private String category;
-    private String hierarchy;
     private boolean taskScheduled;
     private LocalDateTime scheduledDate;
     private boolean isUrgent;
