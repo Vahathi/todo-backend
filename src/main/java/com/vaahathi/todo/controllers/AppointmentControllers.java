@@ -4,6 +4,7 @@ import com.vaahathi.todo.entity.Appointment;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
 import com.vaahathi.todo.models.appointment.AppointmentRequest;
 import com.vaahathi.todo.models.appointment.AppointmentResponse;
+import com.vaahathi.todo.models.dto.ErrorResponse;
 import com.vaahathi.todo.repository.AppointmentRepository;
 import com.vaahathi.todo.repository.TaskRelationRepository;
 import com.vaahathi.todo.service.AppointmentService;
@@ -16,14 +17,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -53,10 +53,26 @@ public class AppointmentControllers {
 
 
     @PostMapping("/create")
-    public ResponseEntity<AppointmentResponse> createAppointment(@RequestBody AppointmentRequest appointmentRequest) throws Exception {
-        AppointmentResponse appointmentResponse = appointmentService.CreateAppointmentAndUpdateTaskRel(appointmentRequest);
-        return ResponseEntity.ok(appointmentResponse);
+    public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+        try {
+            AppointmentResponse appointmentResponse = appointmentService.CreateAppointmentAndUpdateTaskRel(appointmentRequest);
+            return ResponseEntity.ok(appointmentResponse);
+        } catch (Exception ex) {
+            // Log the exception
+            List<String> stackTrace = Arrays.stream(ex.getStackTrace())
+                    .map(StackTraceElement::toString)
+                    .collect(Collectors.toList());
+
+            // Create error response with message and stack trace
+            ErrorResponse errorResponse = new ErrorResponse(
+                    "An error occurred while creating the appointment.",
+                    ex.getMessage(),
+                    stackTrace
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
+
 
     @GetMapping("/List")
     public ResponseEntity<List<AppointmentResponse>> getAppointments(

@@ -2,6 +2,7 @@ package com.vaahathi.todo.controllers;
 
 import com.vaahathi.todo.entity.Payment;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
+import com.vaahathi.todo.models.dto.ErrorResponse;
 import com.vaahathi.todo.models.payment.PaymentRequest;
 import com.vaahathi.todo.models.payment.PaymentResponse;
 import com.vaahathi.todo.repository.PaymentRepository;
@@ -14,14 +15,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/payment")
@@ -43,10 +43,29 @@ public class PaymentControllers {
             @ApiResponse(responseCode = "404", description = "Resource not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PostMapping("/process")
-    public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest paymentRequest) throws Exception {
-        PaymentResponse paymentResponse = paymentService.createPaymentTaskRel(paymentRequest);
-        return ResponseEntity.ok(paymentResponse);
+    public ResponseEntity<?> processPayment(@RequestBody PaymentRequest paymentRequest) {
+        try {
+            // Call the service to process the payment and create the payment task relationship
+            PaymentResponse paymentResponse = paymentService.createPaymentTaskRel(paymentRequest);
+            return ResponseEntity.ok(paymentResponse);
+        } catch (Exception ex) {
+            // Log the exception and capture the stack trace
+            List<String> stackTrace = Arrays.stream(ex.getStackTrace())
+                    .map(StackTraceElement::toString)
+                    .collect(Collectors.toList());
+
+            // Create a custom error response with a general error message and the stack trace
+            ErrorResponse errorResponse = new ErrorResponse(
+                    "An error occurred while processing the payment.",
+                    ex.getMessage(),
+                    stackTrace
+            );
+
+            // Return the error response with 500 Internal Server Error status
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
+
 
     //    public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest paymentRequest) {
 //        paymentRequest.setPurpose(paymentRequest.getPurpose());

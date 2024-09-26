@@ -2,6 +2,7 @@ package com.vaahathi.todo.controllers;
 
 import com.vaahathi.todo.entity.Event;
 import com.vaahathi.todo.exceptions.ResourceNotFoundException;
+import com.vaahathi.todo.models.dto.ErrorResponse;
 import com.vaahathi.todo.models.event.EventRequest;
 import com.vaahathi.todo.models.event.EventResponse;
 import com.vaahathi.todo.repository.EventRepository;
@@ -15,14 +16,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/events")
@@ -47,9 +47,28 @@ public class EventControllers {
                     content = @Content(schema = @Schema(implementation = Event.class))),
             @ApiResponse(responseCode = "404", description = "Resource not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
+
     @PostMapping("/create")
-    public ResponseEntity<EventResponse> createEvent(@RequestBody EventRequest eventRequest) throws Exception {
-        return eventService.CreateEventAndUpdateTaskRel(eventRequest);
+    public ResponseEntity<?> createEvent(@RequestBody EventRequest eventRequest) {
+        try {
+            // Directly return the ResponseEntity from the service
+            return eventService.CreateEventAndUpdateTaskRel(eventRequest);
+        } catch (Exception ex) {
+            // Log the exception and prepare error response
+            List<String> stackTrace = Arrays.stream(ex.getStackTrace())
+                    .map(StackTraceElement::toString)
+                    .collect(Collectors.toList());
+
+            // Create the error response
+            ErrorResponse errorResponse = new ErrorResponse(
+                    "An error occurred while creating the event.",
+                    ex.getMessage(),
+                    stackTrace
+            );
+
+            // Return the error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
     @GetMapping("/list")
